@@ -17,7 +17,7 @@ export function PlanetHalf({ half, split, crackGlow, vibration }: Props) {
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
-      uDisplace: { value: 0.55 },
+      uDisplace: { value: 0.32 },
       uWind: { value: 1.0 },
       uCrackGlow: { value: 0 },
       uLightDir: { value: new THREE.Vector3(0.6, 0.8, 0.4).normalize() },
