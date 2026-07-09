@@ -12,7 +12,7 @@ export function CameraRig({ scrollY }: { scrollY: { current: number } }) {
     const px = mouse.x * 0.35;
     const py = mouse.y * 0.25;
     // Dolly out slightly as user scrolls into fracture
-    const dolly = 5.5 + scrollY.current * 1.2;
+    const dolly = 4.2 + scrollY.current * 1.1;
     camera.position.x += (px - camera.position.x) * k;
     camera.position.y += (py - camera.position.y) * k;
     camera.position.z += (dolly - camera.position.z) * k;

@@ -46,7 +46,7 @@ export function Scene() {
         alpha: true,
         stencil: false,
       }}
-      camera={{ position: [0, 0, 5.5], fov: 32, near: 0.1, far: 60 }}
+      camera={{ position: [0, 0, 4.2], fov: 35, near: 0.1, far: 60 }}
       onCreated={({ gl }) => {
         gl.localClippingEnabled = true;
         gl.toneMapping = THREE.ACESFilmicToneMapping;
@@ -54,7 +54,7 @@ export function Scene() {
       }}
     >
       <color attach="background" args={["#161f19"]} />
-      <fog attach="fog" args={["#161f19", 4, 10]} />
+      <fog attach="fog" args={["#161f19", 10, 22]} />
 
       <Suspense fallback={null}>
         <Environment preset="forest" environmentIntensity={0.35} />
