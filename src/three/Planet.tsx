@@ -103,20 +103,3 @@ export function Planet({
     </group>
   );
 }
-  return (
-    <group ref={groupRef}>
-      <PlanetHalf half={-1} split={split} crackGlow={crackGlow} vibration={vibration} />
-      <PlanetHalf half={1} split={split} crackGlow={crackGlow} vibration={vibration} />
-      {/* Inner glow between halves */}
-      <mesh>
-        <sphereGeometry args={[0.35, 32, 32]} />
-        <meshBasicMaterial
-          color={"#fff8e0"}
-          transparent
-          opacity={Math.min(1, split * 1.5) * 0.35 + crackGlow * 0.25}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
-    </group>
-  );
-}
