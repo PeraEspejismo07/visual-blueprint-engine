@@ -80,12 +80,10 @@ export function Planet({
     const t = state.clock.elapsedTime;
     groupRef.current.position.y = Math.sin(t * 0.4) * 0.08;
     groupRef.current.rotation.y += delta * 0.05;
-    // Auto-scale for aspect
     const aspect = state.size.width / state.size.height;
-    const target = aspect < 1 ? 0.55 : 0.85;
-    groupRef.current.scale.setScalar(
-      groupRef.current.scale.x + (target - groupRef.current.scale.x) * Math.min(1, delta * 3),
-    );
+    const target = aspect < 1 ? 0.35 : 0.55;
+    const cur = groupRef.current.scale.x;
+    groupRef.current.scale.setScalar(cur + (target - cur) * Math.min(1, delta * 4));
   });
   return (
     <group ref={groupRef}>
