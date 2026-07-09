@@ -12,10 +12,7 @@ export function CameraRig({ scrollY }: { scrollY: { current: number } }) {
     const px = mouse.x * 0.35;
     const py = mouse.y * 0.25;
     // Dolly out slightly as user scrolls into fracture
-    // Fit the planet to ~30% of viewport height regardless of aspect.
-    const aspect = (typeof window !== "undefined" ? window.innerWidth / window.innerHeight : 1);
-    const base = aspect < 1 ? 16 : 11;
-    const dolly = base + scrollY.current * 3;
+    const dolly = 7 + scrollY.current * 1.8;
     camera.position.x += (px - camera.position.x) * k;
     camera.position.y += (py - camera.position.y) * k;
     camera.position.z += (dolly - camera.position.z) * k;
