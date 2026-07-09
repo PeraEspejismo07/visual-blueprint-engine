@@ -28,7 +28,7 @@ export function PlanetHalf({ half, split, crackGlow, vibration }: Props) {
   // Hemisphere geometry: full sphere clipped to one half via clipping plane.
   // Using a full high-poly icosphere, then a shader-side world-space clip via
   // discarding fragments on the wrong side of Y=0 in local space.
-  const geometry = useMemo(() => new THREE.IcosahedronGeometry(1, 96), []);
+  const geometry = useMemo(() => new THREE.IcosahedronGeometry(1, 48), []);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
@@ -58,7 +58,7 @@ export function PlanetHalf({ half, split, crackGlow, vibration }: Props) {
         uniforms={uniforms}
         vertexShader={planetVertex}
         fragmentShader={planetFragment}
-        clippingPlanes={[new THREE.Plane(new THREE.Vector3(half, 0, 0), 0.002)]}
+        clippingPlanes={[new THREE.Plane(new THREE.Vector3(half, 0, 0), 0)]}
         clipShadows
       />
     </mesh>
