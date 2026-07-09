@@ -46,7 +46,7 @@ export function Scene() {
         alpha: true,
         stencil: false,
       }}
-      camera={{ position: [0, 0, 14], fov: 22, near: 0.1, far: 60 }}
+      camera={{ position: [0, 0, 14], fov: 30, near: 0.1, far: 60 }}
       onCreated={({ gl }) => {
         gl.localClippingEnabled = true;
         gl.toneMapping = THREE.ACESFilmicToneMapping;
