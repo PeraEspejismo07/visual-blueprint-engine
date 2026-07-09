@@ -78,10 +78,31 @@ export function Planet({
   useFrame((state, delta) => {
     if (!groupRef.current) return;
     const t = state.clock.elapsedTime;
-    // Slow drift + levitation
     groupRef.current.position.y = Math.sin(t * 0.4) * 0.08;
     groupRef.current.rotation.y += delta * 0.05;
+    // Auto-scale for aspect
+    const aspect = state.size.width / state.size.height;
+    const target = aspect < 1 ? 0.55 : 0.85;
+    groupRef.current.scale.setScalar(
+      groupRef.current.scale.x + (target - groupRef.current.scale.x) * Math.min(1, delta * 3),
+    );
   });
+  return (
+    <group ref={groupRef}>
+      <PlanetHalf half={-1} split={split} crackGlow={crackGlow} vibration={vibration} />
+      <PlanetHalf half={1} split={split} crackGlow={crackGlow} vibration={vibration} />
+      <mesh>
+        <sphereGeometry args={[0.35, 32, 32]} />
+        <meshBasicMaterial
+          color={"#fff8e0"}
+          transparent
+          opacity={Math.min(1, split * 1.5) * 0.35 + crackGlow * 0.25}
+          blending={THREE.AdditiveBlending}
+        />
+      </mesh>
+    </group>
+  );
+}
   return (
     <group ref={groupRef}>
       <PlanetHalf half={-1} split={split} crackGlow={crackGlow} vibration={vibration} />
