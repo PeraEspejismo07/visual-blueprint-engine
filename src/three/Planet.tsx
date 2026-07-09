@@ -81,9 +81,8 @@ export function Planet({
     groupRef.current.position.y = Math.sin(t * 0.4) * 0.08;
     groupRef.current.rotation.y += delta * 0.05;
     const aspect = state.size.width / state.size.height;
-    const target = aspect < 1 ? 0.35 : 0.55;
-    const cur = groupRef.current.scale.x;
-    groupRef.current.scale.setScalar(cur + (target - cur) * Math.min(1, delta * 4));
+    const target = aspect < 1 ? 0.32 : 0.5;
+    groupRef.current.scale.setScalar(target);
   });
   return (
     <group ref={groupRef}>
