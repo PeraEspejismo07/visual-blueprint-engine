@@ -28,7 +28,7 @@ export function PlanetHalf({ half, split, crackGlow, vibration }: Props) {
   // Hemisphere geometry: full sphere clipped to one half via clipping plane.
   // Using a full high-poly icosphere, then a shader-side world-space clip via
   // discarding fragments on the wrong side of Y=0 in local space.
-  const geometry = useMemo(() => new THREE.IcosahedronGeometry(1, 48), []);
+  const geometry = useMemo(() => new THREE.IcosahedronGeometry(0.42, 48), []);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
@@ -38,7 +38,7 @@ export function PlanetHalf({ half, split, crackGlow, vibration }: Props) {
     }
     if (meshRef.current) {
       // Separation along X for a clean "book opening" split.
-      const target = split * 0.55 * half;
+      const target = split * 0.24 * half;
       meshRef.current.position.x += (target - meshRef.current.position.x) * Math.min(1, delta * 3.5);
 
       // Vibration: high-frequency micro shake before fracture.
