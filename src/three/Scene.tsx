@@ -76,7 +76,7 @@ export function Scene() {
 
       <CameraRig scrollY={scrollY} />
 
-      <EffectComposer multisampling={0} disableNormalPass>
+      <EffectComposer multisampling={0} enableNormalPass={false}>
         <Bloom
           intensity={0.55}
           luminanceThreshold={0.4}
