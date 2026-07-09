@@ -86,7 +86,7 @@ export function Planet({
       <PlanetHalf half={-1} split={split} crackGlow={crackGlow} vibration={vibration} />
       <PlanetHalf half={1} split={split} crackGlow={crackGlow} vibration={vibration} />
       <mesh>
-        <sphereGeometry args={[0.35, 32, 32]} />
+        <sphereGeometry args={[0.15, 32, 32]} />
         <meshBasicMaterial
           color={"#fff8e0"}
           transparent
