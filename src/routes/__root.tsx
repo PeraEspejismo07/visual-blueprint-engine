@@ -83,6 +83,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Next-generation portable waste reclamation technology." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
     links: [
       {
         rel: "stylesheet",
