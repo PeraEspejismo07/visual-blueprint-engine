@@ -82,7 +82,7 @@ export function Planet({
     groupRef.current.rotation.y += delta * 0.05;
   });
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} scale={2.2}>
       <PlanetHalf half={-1} split={split} crackGlow={crackGlow} vibration={vibration} />
       <PlanetHalf half={1} split={split} crackGlow={crackGlow} vibration={vibration} />
       <mesh>
