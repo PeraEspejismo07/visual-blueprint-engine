@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { Environment, AdaptiveDpr, AdaptiveEvents } from "@react-three/drei";
+import { Environment, AdaptiveEvents } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette, Noise, ToneMapping } from "@react-three/postprocessing";
 import { BlendFunction, ToneMappingMode } from "postprocessing";
 import { Suspense, useEffect, useRef, useState } from "react";
@@ -39,18 +39,20 @@ export function Scene() {
   return (
     <Canvas
       className="!fixed inset-0 z-0"
-      dpr={[1, 2]}
+      dpr={[1.5, 3]}
       gl={{
         antialias: true,
         powerPreference: "high-performance",
         alpha: true,
         stencil: false,
+        premultipliedAlpha: true,
       }}
       camera={{ position: [0, 0, 4.2], fov: 35, near: 0.1, far: 60 }}
       onCreated={({ gl }) => {
         gl.localClippingEnabled = true;
         gl.toneMapping = THREE.ACESFilmicToneMapping;
         gl.toneMappingExposure = 1.05;
+        gl.outputColorSpace = THREE.SRGBColorSpace;
       }}
     >
       <color attach="background" args={["#161f19"]} />
@@ -76,19 +78,18 @@ export function Scene() {
 
       <CameraRig scrollY={scrollY} />
 
-      <EffectComposer multisampling={0} enableNormalPass={false}>
+      <EffectComposer multisampling={4} enableNormalPass={false}>
         <Bloom
-          intensity={0.55}
-          luminanceThreshold={0.4}
-          luminanceSmoothing={0.35}
+          intensity={0.5}
+          luminanceThreshold={0.45}
+          luminanceSmoothing={0.3}
           mipmapBlur
         />
-        <Vignette eskil={false} offset={0.15} darkness={0.85} />
-        <Noise premultiply blendFunction={BlendFunction.SOFT_LIGHT} opacity={0.35} />
+        <Vignette eskil={false} offset={0.18} darkness={0.8} />
+        <Noise premultiply blendFunction={BlendFunction.SOFT_LIGHT} opacity={0.12} />
         <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
       </EffectComposer>
 
-      <AdaptiveDpr pixelated />
       <AdaptiveEvents />
     </Canvas>
   );
