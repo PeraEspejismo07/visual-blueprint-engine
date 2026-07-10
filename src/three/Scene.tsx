@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { Environment, AdaptiveDpr, AdaptiveEvents } from "@react-three/drei";
+import { Environment, AdaptiveEvents } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette, Noise, ToneMapping } from "@react-three/postprocessing";
 import { BlendFunction, ToneMappingMode } from "postprocessing";
 import { Suspense, useEffect, useRef, useState } from "react";
