@@ -78,19 +78,18 @@ export function Scene() {
 
       <CameraRig scrollY={scrollY} />
 
-      <EffectComposer multisampling={0} enableNormalPass={false}>
+      <EffectComposer multisampling={4} enableNormalPass={false}>
         <Bloom
-          intensity={0.55}
-          luminanceThreshold={0.4}
-          luminanceSmoothing={0.35}
+          intensity={0.5}
+          luminanceThreshold={0.45}
+          luminanceSmoothing={0.3}
           mipmapBlur
         />
-        <Vignette eskil={false} offset={0.15} darkness={0.85} />
-        <Noise premultiply blendFunction={BlendFunction.SOFT_LIGHT} opacity={0.35} />
+        <Vignette eskil={false} offset={0.18} darkness={0.8} />
+        <Noise premultiply blendFunction={BlendFunction.SOFT_LIGHT} opacity={0.12} />
         <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
       </EffectComposer>
 
-      <AdaptiveDpr pixelated />
       <AdaptiveEvents />
     </Canvas>
   );
