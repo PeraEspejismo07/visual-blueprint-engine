@@ -39,18 +39,20 @@ export function Scene() {
   return (
     <Canvas
       className="!fixed inset-0 z-0"
-      dpr={[1, 2]}
+      dpr={[1.5, 3]}
       gl={{
         antialias: true,
         powerPreference: "high-performance",
         alpha: true,
         stencil: false,
+        premultipliedAlpha: true,
       }}
       camera={{ position: [0, 0, 4.2], fov: 35, near: 0.1, far: 60 }}
       onCreated={({ gl }) => {
         gl.localClippingEnabled = true;
         gl.toneMapping = THREE.ACESFilmicToneMapping;
         gl.toneMappingExposure = 1.05;
+        gl.outputColorSpace = THREE.SRGBColorSpace;
       }}
     >
       <color attach="background" args={["#161f19"]} />
