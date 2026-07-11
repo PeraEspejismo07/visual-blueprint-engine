@@ -9,12 +9,12 @@ export const Route = createFileRoute("/dashboard")({
   component: DashboardLayout,
 });
 
-const NAV = [
+const NAV: Array<{ to: string; label: string; icon: typeof Home; exact?: boolean }> = [
   { to: "/dashboard", label: "Inicio", icon: Home, exact: true },
   { to: "/dashboard/impacto", label: "Mi impacto", icon: LineChart },
   { to: "/dashboard/conexiones", label: "Conexiones", icon: Plug },
   { to: "/dashboard/configuracion", label: "Configuración", icon: Settings },
-] as const;
+];
 
 function DashboardLayout() {
   const navigate = useNavigate();
