@@ -14,13 +14,169 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cleanup_actions: {
+        Row: {
+          action_type: string
+          co2_grams_saved: number | null
+          created_at: string | null
+          file_name: string | null
+          id: string
+          size_bytes: number | null
+          source: string
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          co2_grams_saved?: number | null
+          created_at?: string | null
+          file_name?: string | null
+          id?: string
+          size_bytes?: number | null
+          source: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          co2_grams_saved?: number | null
+          created_at?: string | null
+          file_name?: string | null
+          id?: string
+          size_bytes?: number | null
+          source?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cleanup_actions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connections: {
+        Row: {
+          access_token: string | null
+          connected_at: string | null
+          extension_device_id: string | null
+          id: string
+          last_synced_at: string | null
+          pairing_code: string | null
+          pairing_code_expires_at: string | null
+          provider: string
+          refresh_token: string | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          access_token?: string | null
+          connected_at?: string | null
+          extension_device_id?: string | null
+          id?: string
+          last_synced_at?: string | null
+          pairing_code?: string | null
+          pairing_code_expires_at?: string | null
+          provider: string
+          refresh_token?: string | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          access_token?: string | null
+          connected_at?: string | null
+          extension_device_id?: string | null
+          id?: string
+          last_synced_at?: string | null
+          pairing_code?: string | null
+          pairing_code_expires_at?: string | null
+          provider?: string
+          refresh_token?: string | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connections_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      daily_metrics: {
+        Row: {
+          actions_count: number | null
+          co2_kg_saved: number | null
+          date: string
+          gb_freed: number | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          actions_count?: number | null
+          co2_kg_saved?: number | null
+          date?: string
+          gb_freed?: number | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          actions_count?: number | null
+          co2_kg_saved?: number | null
+          date?: string
+          gb_freed?: number | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_metrics_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string
+          full_name: string | null
+          id: string
+          last_active_at: string | null
+          streak_days: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          full_name?: string | null
+          id: string
+          last_active_at?: string | null
+          streak_days?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          full_name?: string | null
+          id?: string
+          last_active_at?: string | null
+          streak_days?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      update_streak: { Args: { p_user_id: string }; Returns: undefined }
+      upsert_daily_metric: {
+        Args: { p_co2: number; p_gb: number; p_user_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
