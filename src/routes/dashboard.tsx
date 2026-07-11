@@ -79,7 +79,7 @@ function DashboardLayout() {
             return (
               <Link
                 key={n.to}
-                to={n.to}
+                to={n.to as never}
                 onClick={() => setOpen(false)}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
                   active
