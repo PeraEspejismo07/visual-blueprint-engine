@@ -15,6 +15,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardImpactoRouteImport } from './routes/dashboard.impacto'
+import { Route as DashboardConfiguracionRouteImport } from './routes/dashboard.configuracion'
 import { Route as DashboardConexionesRouteImport } from './routes/dashboard.conexiones'
 
 const RegisterRoute = RegisterRouteImport.update({
@@ -47,6 +48,11 @@ const DashboardImpactoRoute = DashboardImpactoRouteImport.update({
   path: '/impacto',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardConfiguracionRoute = DashboardConfiguracionRouteImport.update({
+  id: '/configuracion',
+  path: '/configuracion',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardConexionesRoute = DashboardConexionesRouteImport.update({
   id: '/conexiones',
   path: '/conexiones',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/dashboard/conexiones': typeof DashboardConexionesRoute
+  '/dashboard/configuracion': typeof DashboardConfiguracionRoute
   '/dashboard/impacto': typeof DashboardImpactoRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/dashboard/conexiones': typeof DashboardConexionesRoute
+  '/dashboard/configuracion': typeof DashboardConfiguracionRoute
   '/dashboard/impacto': typeof DashboardImpactoRoute
   '/dashboard': typeof DashboardIndexRoute
 }
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/dashboard/conexiones': typeof DashboardConexionesRoute
+  '/dashboard/configuracion': typeof DashboardConfiguracionRoute
   '/dashboard/impacto': typeof DashboardImpactoRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/dashboard/conexiones'
+    | '/dashboard/configuracion'
     | '/dashboard/impacto'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/dashboard/conexiones'
+    | '/dashboard/configuracion'
     | '/dashboard/impacto'
     | '/dashboard'
   id:
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/dashboard/conexiones'
+    | '/dashboard/configuracion'
     | '/dashboard/impacto'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
@@ -160,6 +172,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardImpactoRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/configuracion': {
+      id: '/dashboard/configuracion'
+      path: '/configuracion'
+      fullPath: '/dashboard/configuracion'
+      preLoaderRoute: typeof DashboardConfiguracionRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/conexiones': {
       id: '/dashboard/conexiones'
       path: '/conexiones'
@@ -172,12 +191,14 @@ declare module '@tanstack/react-router' {
 
 interface DashboardRouteChildren {
   DashboardConexionesRoute: typeof DashboardConexionesRoute
+  DashboardConfiguracionRoute: typeof DashboardConfiguracionRoute
   DashboardImpactoRoute: typeof DashboardImpactoRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardConexionesRoute: DashboardConexionesRoute,
+  DashboardConfiguracionRoute: DashboardConfiguracionRoute,
   DashboardImpactoRoute: DashboardImpactoRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
