@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Puzzle, ChevronRight, Leaf, Shield, LineChart, Users, Check } from "lucide-react";
+import { SceneMount } from "@/three/SceneMount";
 
 export const Route = createFileRoute("/")({
   head: () => ({
