@@ -8,7 +8,6 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
-import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -78,10 +77,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CarboFile — Cuida el planeta, empieza por lo que ya no ves" },
-      { name: "description", content: "Extensión que limpia pestañas, descargas y archivos redundantes en tu Drive. Mide el CO₂ que ahorras." },
-      { property: "og:title", content: "CarboFile" },
-      { property: "og:description", content: "Reduce tu huella digital en un clic." },
+      { title: "Verdant — Circular systems for a cleaner planet" },
+      { name: "description", content: "Next-generation portable waste reclamation technology restoring balance to the planet." },
+      { property: "og:title", content: "Verdant — Circular systems for a cleaner planet" },
+      { property: "og:description", content: "Next-generation portable waste reclamation technology." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -120,7 +119,6 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
-      <Toaster theme="dark" position="top-right" />
     </QueryClientProvider>
   );
 }

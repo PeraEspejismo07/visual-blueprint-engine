@@ -5,37 +5,112 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--background);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-stone: var(--stone);
+  --color-moss: var(--moss);
+  --color-flower: var(--flower);
+  --color-highlight: var(--highlight);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-accent: var(--primary);
+  --color-primary: var(--foreground);
+  --color-primary-foreground: var(--background);
 }
 
 :root {
-  --background: #0a0f0c;
-  --surface: #12161a;
-  --surface-2: #171c20;
-  --foreground: #f2f6f3;
-  --muted-foreground: #8a938c;
-  --border: rgba(255, 255, 255, 0.08);
-  --primary: #00e676;
-  --primary-foreground: #0a0f0c;
-  --radius: 0.75rem;
+  --background: #161f19;
+  --surface: #212b23;
+  --foreground: #eae6df;
+  --highlight: #d8d3c9;
+  --muted-foreground: #8b8b84;
+  --stone: #8b8b84;
+  --moss: #6f7f4a;
+  --flower: #c6b4e6;
+  --border: rgba(234, 230, 223, 0.08);
 }
 
 @layer base {
-  html, body {
+  html,
+  body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-feature-settings: "ss01", "ss02", "cv11";
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
-  * { border-color: var(--color-border); }
-  ::selection { background: var(--color-primary); color: var(--color-primary-foreground); }
+  * {
+    border-color: var(--color-border);
+  }
+  ::selection {
+    background: var(--color-moss);
+    color: var(--color-foreground);
+  }
+}
+
+@utility display {
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+@utility eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+  font-weight: 400;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slow-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(0.6deg);
+  }
+}
+@keyframes bg-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes drift {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy));
+    opacity: 0;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-float {
+  animation: slow-float 12s ease-in-out infinite;
+}
+.animate-bg {
+  animation: bg-fade 1.6s ease-out both;
 }
