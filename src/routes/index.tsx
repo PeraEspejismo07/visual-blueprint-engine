@@ -294,7 +294,8 @@ function Footer() {
 
 function Landing() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="relative min-h-screen text-foreground">
+      <SceneMount />
       <Nav />
       <Hero />
       <HowItWorks />
