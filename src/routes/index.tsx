@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SceneMount } from "@/three/SceneMount";
 
@@ -25,10 +25,8 @@ function Index() {
 
   return (
     <main className="relative min-h-[500vh] bg-background text-foreground">
-      {/* WebGL scene is fixed behind everything */}
       <SceneMount />
 
-      {/* Grain */}
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 z-[60] opacity-[0.025] mix-blend-overlay"
@@ -40,95 +38,114 @@ function Index() {
 
       <Nav />
 
-      {/* Section 1 — Hero */}
+      {/* Sección 1 — Hero */}
       <section className="relative z-10 flex min-h-[100svh] flex-col justify-between px-6 pt-32 pb-10 md:px-10 md:pt-40">
         <div className="mx-auto w-full max-w-[1400px]">
-          <p className="eyebrow animate-fade-up">Introducing Verdant 01</p>
+          <p className="eyebrow animate-fade-up">Presentamos Carbofile</p>
           <h1
             className="display mt-6 max-w-[14ch] text-[13vw] md:text-[7.2vw] animate-fade-up"
             style={{ animationDelay: "150ms" }}
           >
-            Circular systems<br />for a cleaner<br />planet
+            Menos archivos.<br />Menos huella.<br />Más planeta.
           </h1>
+
+          <div
+            className="mt-10 flex flex-wrap items-center gap-3 animate-fade-up"
+            style={{ animationDelay: "450ms" }}
+          >
+            <Link
+              to="/auth"
+              className="inline-flex items-center justify-center rounded-full bg-foreground px-6 py-3 text-sm text-background transition hover:opacity-90"
+            >
+              Registrarme
+            </Link>
+            <Link
+              to="/auth"
+              className="inline-flex items-center justify-center rounded-full border border-border px-6 py-3 text-sm text-foreground transition hover:border-foreground"
+            >
+              Iniciar sesión
+            </Link>
+          </div>
         </div>
+
         <div
           className="mx-auto flex w-full max-w-[1400px] items-end justify-between text-[12px] text-muted-foreground animate-fade-up"
           style={{ animationDelay: "700ms" }}
         >
           <span>
-            Next-Generation Portable<br />Waste Reclamation Technology
+            Agente de IA en tu navegador<br />para limpiar lo que ya no necesitas
           </span>
-          <span className="hidden md:inline">Scroll ↓</span>
-          <span>MMXXVI / Berlin</span>
+          <span className="hidden md:inline">Desliza ↓</span>
+          <span>MMXXVI / Berlín</span>
         </div>
       </section>
 
-      {/* Section 2 — Stat, appears while planet starts to vibrate */}
+      {/* Sección 2 — Escala */}
       <section className="relative z-10 flex min-h-[100svh] items-end px-6 pb-24 md:px-10">
         <div className="mx-auto grid w-full max-w-[1400px] grid-cols-1 items-end gap-16 md:grid-cols-12">
           <div className="md:col-span-6">
-            <p className="eyebrow">The scale</p>
+            <p className="eyebrow">La escala</p>
             <p className="display mt-6 text-[16vw] md:text-[9vw]">
-              2.01 <span className="text-muted-foreground">billion</span>
+              328 <span className="text-muted-foreground">millones de toneladas</span>
             </p>
             <p className="mt-6 max-w-md text-sm leading-relaxed text-muted-foreground">
-              Tonnes of solid waste produced globally each year. By 2050 the figure
-              climbs to 3.4 billion — outpacing every recovery system on Earth.
+              De CO₂ se emiten cada año únicamente para almacenar datos que nadie volverá a abrir.
+              Cada archivo duplicado, cada instalador olvidado, cada adjunto sin leer pesa.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Section 3 — Manifesto, cracks glow */}
+      {/* Sección 3 — Manifiesto */}
       <section className="relative z-10 flex min-h-[100svh] items-center px-6 md:px-10">
         <div className="mx-auto max-w-[1400px]">
-          <p className="eyebrow">Manifesto</p>
+          <p className="eyebrow">Manifiesto</p>
           <p
             className="mt-8 max-w-[22ch] text-[8vw] leading-[1.05] tracking-tight md:max-w-[28ch] md:text-[3.6vw]"
             style={{ fontWeight: 300 }}
           >
-            Recovery obstacles and contamination crises have surpassed critical limits,
-            and the pursuit of transformative green solutions has never{" "}
-            <span className="text-muted-foreground">carried more weight.</span>
+            La nube no es una nube: son centros de datos ardiendo. Guardamos todo por si acaso, y
+            ese «por si acaso» pesa{" "}
+            <span className="text-muted-foreground">más que cualquier bosque.</span>
           </p>
         </div>
       </section>
 
-      {/* Section 4 — Fracture (planet has opened) */}
+      {/* Sección 4 — Fractura */}
       <section className="relative z-10 flex min-h-[100svh] items-end px-6 pb-32 md:px-10">
         <div className="mx-auto grid w-full max-w-[1400px] grid-cols-1 items-end gap-10 md:grid-cols-12">
           <div className="md:col-span-6">
             <p className="display text-[12vw] leading-[0.95] md:text-[5.2vw]">
-              under a fifth
+              menos de un tercio
             </p>
             <p className="mt-4 text-xs text-muted-foreground">
-              Of all refuse is reclaimed each year
+              De los archivos que guardas se vuelven a abrir alguna vez
             </p>
           </div>
           <div className="md:col-span-5 md:col-start-8">
             <p className="text-sm leading-relaxed text-muted-foreground">
-              The current infrastructure was designed for a linear world. Verdant
-              reconstructs the loop — recovering materials at the source, converting
-              entropy into inventory, and returning value to communities.
+              Carbofile es un agente de IA que vive en tu navegador. Cada vez que descargas algo o
+              entras a Google Drive, OneDrive o Dropbox, analiza qué merece la pena conservar y
+              borra el resto por ti — con tu permiso y con memoria reversible.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Section 5 — Instrument grid, CTA */}
-      <section id="technology" className="relative z-10 px-6 py-32 md:px-10 md:py-48">
+      {/* Sección 5 — El instrumento / CTA */}
+      <section id="tecnologia" className="relative z-10 px-6 py-32 md:px-10 md:py-48">
         <div className="mx-auto max-w-[1400px]">
-          <p className="eyebrow">The instrument</p>
+          <p className="eyebrow">El agente</p>
           <h2 className="display mt-6 max-w-[16ch] text-[10vw] md:text-[5.4vw]">
-            A quiet machine, built to disappear into the landscape.
+            Silencioso, autónomo, siempre a tu favor.
           </h2>
 
           <div className="mt-24 grid grid-cols-2 gap-x-8 gap-y-16 md:grid-cols-4">
             {[
-              ["01", "Modular", "Deploys in under nine minutes without foundation work."],
-              ["02", "Circular", "94% of processed matter re-enters supply chains."],
-              ["03", "Autonomous", "Solar-native. Silent. Runs unattended for 180 days."],
-              ["04", "Regenerative", "Restores soil biology in the immediate perimeter."],
+              ["01", "En tu navegador", "Extensión ligera para Chrome, Arc, Edge y Brave."],
+              ["02", "Multi-nube", "Google Drive, OneDrive, Dropbox, iCloud y Gmail adjuntos."],
+              ["03", "Con IA", "Detecta duplicados, versiones antiguas y basura digital."],
+              ["04", "Reversible", "Todo lo eliminado se puede recuperar durante 30 días."],
             ].map(([n, title, body]) => (
               <div key={n}>
                 <p className="text-xs text-muted-foreground">{n}</p>
@@ -139,23 +156,23 @@ function Index() {
           </div>
 
           <div className="mt-32 text-center">
-            <p className="eyebrow">Limited pilot 2026</p>
+            <p className="eyebrow">Beta abierta 2026</p>
             <h2 className="display mx-auto mt-8 max-w-[18ch] text-[11vw] md:text-[5.6vw]">
-              Bring Verdant to your city.
+              Empieza a limpiar tu huella digital.
             </h2>
             <div className="mt-12 flex flex-col items-center justify-center gap-3 md:flex-row">
-              <a
-                href="#"
-                className="inline-flex items-center justify-center rounded-full bg-foreground px-7 py-3 text-sm text-background transition hover:bg-highlight"
+              <Link
+                to="/auth"
+                className="inline-flex items-center justify-center rounded-full bg-foreground px-7 py-3 text-sm text-background transition hover:opacity-90"
               >
-                Request pilot
-              </a>
-              <a
-                href="#"
+                Crear mi cuenta
+              </Link>
+              <Link
+                to="/auth"
                 className="inline-flex items-center justify-center rounded-full border border-border px-7 py-3 text-sm text-foreground transition hover:border-foreground"
               >
-                Download whitepaper
-              </a>
+                Ya tengo cuenta
+              </Link>
             </div>
           </div>
         </div>
@@ -165,9 +182,9 @@ function Index() {
         <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-6 text-[12px] text-muted-foreground md:flex-row md:items-center">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-moss" />
-            <span>Verdant Systems GmbH</span>
+            <span>Carbofile Systems</span>
           </div>
-          <p>© MMXXVI — All matter returns. {(p * 100).toFixed(0)}%</p>
+          <p>© MMXXVI — Menos bytes, más planeta. {(p * 100).toFixed(0)}%</p>
         </div>
       </footer>
     </main>
@@ -178,21 +195,29 @@ function Nav() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm">
       <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-5 md:px-10">
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-moss" />
-          <span className="text-sm tracking-tight">Verdant</span>
-        </div>
+          <span className="text-sm tracking-tight">Carbofile</span>
+        </Link>
         <nav className="hidden gap-8 text-[13px] text-muted-foreground md:flex">
-          <a className="hover:text-foreground transition" href="#technology">Technology</a>
-          <a className="hover:text-foreground transition" href="#technology">Impact</a>
-          <a className="hover:text-foreground transition" href="#technology">Manifesto</a>
+          <a className="hover:text-foreground transition" href="#tecnologia">Tecnología</a>
+          <a className="hover:text-foreground transition" href="#tecnologia">Impacto</a>
+          <a className="hover:text-foreground transition" href="#tecnologia">Manifiesto</a>
         </nav>
-        <a
-          href="#technology"
-          className="rounded-full border border-border px-4 py-1.5 text-[13px] hover:bg-foreground hover:text-background transition-colors"
-        >
-          Request access
-        </a>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/auth"
+            className="hidden md:inline-flex text-[13px] text-muted-foreground hover:text-foreground transition"
+          >
+            Iniciar sesión
+          </Link>
+          <Link
+            to="/auth"
+            className="rounded-full border border-border px-4 py-1.5 text-[13px] hover:bg-foreground hover:text-background transition-colors"
+          >
+            Registrarme
+          </Link>
+        </div>
       </div>
     </header>
   );
