@@ -65,8 +65,27 @@ function Index() {
             >
               Iniciar sesión
             </Link>
+            <a
+              href="#tecnologia"
+              className="inline-flex items-center justify-center rounded-full border border-dashed border-border px-6 py-3 text-sm text-foreground transition hover:border-foreground"
+            >
+              Agendar demo
+            </a>
           </div>
         </div>
+
+        <div
+          className="mx-auto flex w-full max-w-[1400px] items-end justify-between text-[12px] text-muted-foreground animate-fade-up"
+          style={{ animationDelay: "700ms" }}
+        >
+          <span>
+            Agente de IA en tu navegador<br />para limpiar lo que ya no necesitas
+          </span>
+          <span className="hidden md:inline">Desliza ↓</span>
+          <span>MMXXVI / Berlín</span>
+        </div>
+      </section>
+
 
         <div
           className="mx-auto flex w-full max-w-[1400px] items-end justify-between text-[12px] text-muted-foreground animate-fade-up"
