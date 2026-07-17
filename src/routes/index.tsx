@@ -94,11 +94,11 @@ function Index() {
           <div className="md:col-span-6">
             <p className="eyebrow">La escala</p>
             <p className="display mt-6 text-[16vw] md:text-[9vw]">
-              328 <span className="text-muted-foreground">millones de toneladas</span>
+              2.010 <span className="text-muted-foreground">millones</span>
             </p>
             <p className="mt-6 max-w-md text-sm leading-relaxed text-muted-foreground">
-              De CO₂ se emiten cada año únicamente para almacenar datos que nadie volverá a abrir.
-              Cada archivo duplicado, cada instalador olvidado, cada adjunto sin leer pesa.
+              De toneladas de residuos sólidos se generan cada año en el mundo. Para 2050 la cifra
+              escalará a 3.400 millones — superando a todos los sistemas de recuperación del planeta.
             </p>
           </div>
         </div>
@@ -112,9 +112,9 @@ function Index() {
             className="mt-8 max-w-[22ch] text-[8vw] leading-[1.05] tracking-tight md:max-w-[28ch] md:text-[3.6vw]"
             style={{ fontWeight: 300 }}
           >
-            La nube no es una nube: son centros de datos ardiendo. Guardamos todo por si acaso, y
-            ese «por si acaso» pesa{" "}
-            <span className="text-muted-foreground">más que cualquier bosque.</span>
+            Los obstáculos de recuperación y las crisis de contaminación han superado los límites
+            críticos, y la búsqueda de soluciones verdes transformadoras{" "}
+            <span className="text-muted-foreground">nunca ha tenido más peso.</span>
           </p>
         </div>
       </section>
@@ -124,17 +124,17 @@ function Index() {
         <div className="mx-auto grid w-full max-w-[1400px] grid-cols-1 items-end gap-10 md:grid-cols-12">
           <div className="md:col-span-6">
             <p className="display text-[12vw] leading-[0.95] md:text-[5.2vw]">
-              menos de un tercio
+              menos de una quinta parte
             </p>
             <p className="mt-4 text-xs text-muted-foreground">
-              De los archivos que guardas se vuelven a abrir alguna vez
+              De todos los residuos se recupera cada año
             </p>
           </div>
           <div className="md:col-span-5 md:col-start-8">
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Carbofile es un agente de IA que vive en tu navegador. Cada vez que descargas algo o
-              entras a Google Drive, OneDrive o Dropbox, analiza qué merece la pena conservar y
-              borra el resto por ti — con tu permiso y con memoria reversible.
+              La infraestructura actual fue diseñada para un mundo lineal. Carbofile reconstruye el
+              ciclo — recuperando materiales en el origen, convirtiendo la entropía en inventario y
+              devolviendo valor a las comunidades.
             </p>
           </div>
         </div>
@@ -143,17 +143,17 @@ function Index() {
       {/* Sección 5 — El instrumento / CTA */}
       <section id="tecnologia" className="relative z-10 px-6 py-32 md:px-10 md:py-48">
         <div className="mx-auto max-w-[1400px]">
-          <p className="eyebrow">El agente</p>
+          <p className="eyebrow">El instrumento</p>
           <h2 className="display mt-6 max-w-[16ch] text-[10vw] md:text-[5.4vw]">
-            Silencioso, autónomo, siempre a tu favor.
+            Una máquina silenciosa, hecha para desaparecer en el paisaje.
           </h2>
 
           <div className="mt-24 grid grid-cols-2 gap-x-8 gap-y-16 md:grid-cols-4">
             {[
-              ["01", "En tu navegador", "Extensión ligera para Chrome, Arc, Edge y Brave."],
-              ["02", "Multi-nube", "Google Drive, OneDrive, Dropbox, iCloud y Gmail adjuntos."],
-              ["03", "Con IA", "Detecta duplicados, versiones antiguas y basura digital."],
-              ["04", "Reversible", "Todo lo eliminado se puede recuperar durante 30 días."],
+              ["01", "Modular", "Se despliega en menos de nueve minutos sin obra de cimentación."],
+              ["02", "Circular", "El 94% de la materia procesada vuelve a las cadenas de suministro."],
+              ["03", "Autónoma", "Nativa solar. Silenciosa. Funciona sin supervisión durante 180 días."],
+              ["04", "Regenerativa", "Restaura la biología del suelo en el perímetro inmediato."],
             ].map(([n, title, body]) => (
               <div key={n}>
                 <p className="text-xs text-muted-foreground">{n}</p>
@@ -164,9 +164,9 @@ function Index() {
           </div>
 
           <div className="mt-32 text-center">
-            <p className="eyebrow">Beta abierta 2026</p>
+            <p className="eyebrow">Piloto limitado 2026</p>
             <h2 className="display mx-auto mt-8 max-w-[18ch] text-[11vw] md:text-[5.6vw]">
-              Empieza a limpiar tu huella digital.
+              Trae Carbofile a tu ciudad.
             </h2>
             <div className="mt-12 flex flex-col items-center justify-center gap-3 md:flex-row">
               <Link
@@ -181,10 +181,17 @@ function Index() {
               >
                 Ya tengo cuenta
               </Link>
+              <a
+                href="mailto:hola@carbofile.com?subject=Agendar%20demo"
+                className="inline-flex items-center justify-center rounded-full border border-dashed border-border px-7 py-3 text-sm text-foreground transition hover:border-foreground"
+              >
+                Agendar demo
+              </a>
             </div>
           </div>
         </div>
       </section>
+
 
       <footer className="relative z-10 border-t border-border px-6 py-10 md:px-10">
         <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-6 text-[12px] text-muted-foreground md:flex-row md:items-center">
