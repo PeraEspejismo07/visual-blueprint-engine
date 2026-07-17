@@ -87,17 +87,6 @@ function Index() {
       </section>
 
 
-        <div
-          className="mx-auto flex w-full max-w-[1400px] items-end justify-between text-[12px] text-muted-foreground animate-fade-up"
-          style={{ animationDelay: "700ms" }}
-        >
-          <span>
-            Agente de IA en tu navegador<br />para limpiar lo que ya no necesitas
-          </span>
-          <span className="hidden md:inline">Desliza ↓</span>
-          <span>MMXXVI / Berlín</span>
-        </div>
-      </section>
 
       {/* Sección 2 — Escala */}
       <section className="relative z-10 flex min-h-[100svh] items-end px-6 pb-24 md:px-10">
