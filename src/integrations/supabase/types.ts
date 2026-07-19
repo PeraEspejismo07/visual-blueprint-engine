@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      agent_rules: {
+        Row: {
+          aggressiveness: string
+          auto_delete: boolean
+          created_at: string
+          excluded_extensions: string[]
+          excluded_paths: string[]
+          id: string
+          min_size_mb: number
+          notifications_enabled: boolean
+          paused_until: string | null
+          undo_window_days: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          aggressiveness?: string
+          auto_delete?: boolean
+          created_at?: string
+          excluded_extensions?: string[]
+          excluded_paths?: string[]
+          id?: string
+          min_size_mb?: number
+          notifications_enabled?: boolean
+          paused_until?: string | null
+          undo_window_days?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          aggressiveness?: string
+          auto_delete?: boolean
+          created_at?: string
+          excluded_extensions?: string[]
+          excluded_paths?: string[]
+          id?: string
+          min_size_mb?: number
+          notifications_enabled?: boolean
+          paused_until?: string | null
+          undo_window_days?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       cleanup_actions: {
         Row: {
           action_type: string
@@ -140,6 +185,45 @@ export type Database = {
           },
         ]
       }
+      devices: {
+        Row: {
+          created_at: string
+          device_token: string
+          id: string
+          last_seen_at: string | null
+          name: string
+          paired_at: string | null
+          pairing_code: string | null
+          pairing_code_expires_at: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          device_token: string
+          id?: string
+          last_seen_at?: string | null
+          name?: string
+          paired_at?: string | null
+          pairing_code?: string | null
+          pairing_code_expires_at?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          device_token?: string
+          id?: string
+          last_seen_at?: string | null
+          name?: string
+          paired_at?: string | null
+          pairing_code?: string | null
+          pairing_code_expires_at?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
@@ -172,6 +256,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_pairing_code: {
+        Args: never
+        Returns: {
+          code: string
+          expires_at: string
+        }[]
+      }
+      redeem_pairing_code: {
+        Args: { p_code: string; p_user_agent: string }
+        Returns: {
+          device_token: string
+          user_id: string
+        }[]
+      }
+      restore_action: { Args: { p_action_id: string }; Returns: undefined }
       update_streak: { Args: { p_user_id: string }; Returns: undefined }
       upsert_daily_metric: {
         Args: { p_co2: number; p_gb: number; p_user_id: string }

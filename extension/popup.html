@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { width: 300px; margin: 0; padding: 16px; background: #161f19; color: #eae6df; font-family: -apple-system, sans-serif; font-size: 13px; }
+      h1 { font-size: 14px; font-weight: 500; margin: 0 0 8px; }
+      .row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-top: 1px solid rgba(234,230,223,.08); }
+      .dot { display: inline-block; height: 8px; width: 8px; border-radius: 999px; background: #6f7f4a; margin-right: 6px; }
+      button { background: #eae6df; color: #161f19; border: 0; border-radius: 999px; padding: 6px 12px; font-size: 12px; cursor: pointer; }
+      a { color: #6f7f4a; text-decoration: none; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <h1>Carbofile</h1>
+    <p id="status" style="color:#8b8b84; font-size:12px; margin:0 0 12px"><span class="dot"></span> Cargando…</p>
+    <div class="row"><span>Pausar 1 hora</span><button id="pause">Pausar</button></div>
+    <div class="row"><span>Ajustes</span><a href="#" id="opts">Vincular</a></div>
+    <div class="row"><span>Panel web</span><a href="#" id="dash">Abrir</a></div>
+    <script src="popup.js"></script>
+  </body>
+</html>
