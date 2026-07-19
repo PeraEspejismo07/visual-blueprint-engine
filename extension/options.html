@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Carbofile — Vincular</title>
+    <style>
+      body { max-width: 480px; margin: 60px auto; padding: 0 24px; background: #161f19; color: #eae6df; font-family: -apple-system, sans-serif; }
+      h1 { font-weight: 300; font-size: 28px; letter-spacing: -0.02em; }
+      label { display:block; font-size: 11px; text-transform: uppercase; letter-spacing: .16em; color:#8b8b84; margin-top: 24px; }
+      input { width: 100%; margin-top: 6px; padding: 10px 12px; background: transparent; color: #eae6df; border: 1px solid rgba(234,230,223,.15); border-radius: 6px; font-size: 14px; letter-spacing: .3em; text-align: center; }
+      button { margin-top: 20px; background: #eae6df; color: #161f19; border: 0; border-radius: 999px; padding: 10px 20px; font-size: 13px; cursor: pointer; }
+      p.msg { margin-top: 16px; font-size: 12px; color: #8b8b84; }
+    </style>
+  </head>
+  <body>
+    <h1>Vincular con Carbofile</h1>
+    <p style="color:#8b8b84; font-size:13px">Genera un código de 6 dígitos en tu panel de Carbofile y pégalo aquí.</p>
+    <label>Servidor</label>
+    <input id="server" placeholder="https://tu-app.lovable.app" style="letter-spacing:normal; text-align:left" />
+    <label>Código secreto de ingesta</label>
+    <input id="secret" placeholder="CARBOFILE_INGEST_SECRET" style="letter-spacing:normal; text-align:left" />
+    <label>Código de 6 dígitos</label>
+    <input id="code" placeholder="000000" maxlength="6" />
+    <button id="pair">Vincular</button>
+    <p class="msg" id="msg"></p>
+    <script src="options.js"></script>
+  </body>
+</html>
