@@ -33,7 +33,8 @@ export const Route = createFileRoute("/api/public/ingest")({
             .select("id, user_id")
             .eq("device_token", deviceToken)
             .maybeSingle();
-          if (devErr || !device?.user_id) {
+          const userId = device?.user_id;
+          if (devErr || !userId) {
             return Response.json({ error: "unknown_device" }, { status: 401, headers: cors });
           }
 
@@ -52,12 +53,12 @@ export const Route = createFileRoute("/api/public/ingest")({
           const rows = payload.events.slice(0, 200).map((e) => {
             const bytes = Math.max(0, Number(e.size_bytes ?? 0));
             return {
-              user_id: device.user_id,
+              user_id: userId,
               source: String(e.source).slice(0, 64),
               action_type: e.action_type,
               file_name: e.file_name ? String(e.file_name).slice(0, 500) : null,
               size_bytes: bytes,
-              co2_grams_saved: Math.round((bytes / 1_000_000_000) * 4400), // ~4.4 kg CO2 per GB stored/yr
+              co2_grams_saved: Math.round((bytes / 1_000_000_000) * 4400),
             };
           });
 
@@ -67,7 +68,7 @@ export const Route = createFileRoute("/api/public/ingest")({
           const totalGb = rows.reduce((s, r) => s + r.size_bytes / 1_000_000_000, 0);
           const totalCo2 = rows.reduce((s, r) => s + r.co2_grams_saved / 1000, 0);
           await supabaseAdmin.rpc("upsert_daily_metric", {
-            p_user_id: device.user_id,
+            p_user_id: userId,
             p_gb: totalGb,
             p_co2: totalCo2,
           });
