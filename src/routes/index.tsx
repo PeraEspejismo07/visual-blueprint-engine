@@ -3,8 +3,26 @@ import { SceneMount } from "@/three/SceneMount";
 import { useScrollProgress } from "@/three/useScrollProgress";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Carbofile — Menos archivos, menos huella, más planeta" },
+      {
+        name: "description",
+        content:
+          "Carbofile es el agente de IA en tu navegador que borra los archivos que ya no necesitas y convierte cada limpieza en CO₂ evitado.",
+      },
+      { property: "og:title", content: "Carbofile — Menos archivos, menos huella" },
+      {
+        property: "og:description",
+        content: "Agente de IA que limpia tu basura digital y mide el CO₂ que evitas.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
+
 
 function Index() {
   const p = useScrollProgress();
