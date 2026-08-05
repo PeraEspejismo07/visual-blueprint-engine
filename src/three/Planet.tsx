@@ -101,7 +101,7 @@ export function Planet({
   });
 
   return (
-    <group ref={groupRef} scale={2.2}>
+    <group ref={groupRef} scale={0.8}>
       <PlanetHalf half={-1} split={split} crackGlow={crackGlow} vibration={vibration} detail={detail} />
       <PlanetHalf half={1} split={split} crackGlow={crackGlow} vibration={vibration} detail={detail} />
       <mesh ref={coreRef}>
