@@ -16,7 +16,7 @@ function Ring({
   const ref = useRef<THREE.Group>(null);
   const geo = useMemo(() => {
     const curve = new THREE.EllipseCurve(0, 0, radius, radius * 0.995, 0, Math.PI * 2, false, 0);
-    const pts = curve.getPoints(256).map((p) => new THREE.Vector3(p.x, 0, p.y));
+    const pts = curve.getPoints(128).map((p) => new THREE.Vector3(p.x, 0, p.y));
     return new THREE.BufferGeometry().setFromPoints(pts);
   }, [radius]);
 
@@ -28,7 +28,7 @@ function Ring({
     <group ref={ref} rotation={tilt}>
       <line>
         <primitive object={geo} attach="geometry" />
-        <lineBasicMaterial color="#eae6df" transparent opacity={opacity} />
+        <lineBasicMaterial color="#eae6df" transparent opacity={opacity} depthWrite={false} />
       </line>
     </group>
   );
