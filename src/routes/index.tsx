@@ -186,9 +186,15 @@ function Index() {
             <span className="h-2 w-2 rounded-full bg-moss" />
             <span>Carbofile Systems</span>
           </div>
+          <nav className="flex items-center gap-6">
+            <Link to="/privacy" className="hover:text-foreground transition">Privacidad</Link>
+            <Link to="/terms" className="hover:text-foreground transition">Términos</Link>
+            <a href="mailto:hola@carbofile.com" className="hover:text-foreground transition">Contacto</a>
+          </nav>
           <p>© MMXXVI — Menos bytes, más planeta. {(p * 100).toFixed(0)}%</p>
         </div>
       </footer>
+
     </main>
   );
 }
