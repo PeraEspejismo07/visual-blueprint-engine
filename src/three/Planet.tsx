@@ -3,14 +3,33 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { planetVertex, planetFragment } from "./shaders";
 
+type Ref = { current: number };
+
 type Props = {
   half: -1 | 1;
-  split: number; // 0..1 how far the halves are separated
-  crackGlow: number; // 0..1
-  vibration: number; // 0..1
+  split: Ref;
+  crackGlow: Ref;
+  vibration: Ref;
+  detail: number;
 };
 
-export function PlanetHalf({ half, split, crackGlow, vibration }: Props) {
+// One geometry instance shared by both halves (they are clipped, not cut),
+// so the heavy icosphere is only built and uploaded to the GPU once.
+const geometryCache = new Map<string, THREE.SphereGeometry>();
+function getGeometry(detail: number, half: -1 | 1) {
+  const key = `${detail}:${half}`;
+  let g = geometryCache.get(key);
+  if (!g) {
+    // True hemisphere in local space: the cut plane rotates and travels with
+    // the mesh, so the fracture stays clean at any separation or rotation.
+    const seg = Math.max(32, detail * 2);
+    g = new THREE.SphereGeometry(1, seg, seg, half === 1 ? -Math.PI / 2 : Math.PI / 2, Math.PI);
+    geometryCache.set(key, g);
+  }
+  return g;
+}
+
+export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props) {
   const meshRef = useRef<THREE.Mesh>(null);
   const matRef = useRef<THREE.ShaderMaterial>(null);
 
@@ -25,41 +44,34 @@ export function PlanetHalf({ half, split, crackGlow, vibration }: Props) {
     [],
   );
 
-  // Hemisphere geometry: full sphere clipped to one half via clipping plane.
-  // Using a full high-poly icosphere, then a shader-side world-space clip via
-  // discarding fragments on the wrong side of Y=0 in local space.
-  const geometry = useMemo(() => new THREE.IcosahedronGeometry(1, 96), []);
+  const geometry = useMemo(() => getGeometry(detail, half), [detail, half]);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
     if (matRef.current) {
       matRef.current.uniforms.uTime.value = t;
-      matRef.current.uniforms.uCrackGlow.value = crackGlow;
+      matRef.current.uniforms.uCrackGlow.value = crackGlow.current;
     }
     if (meshRef.current) {
-      // Separation along X for a clean "book opening" split.
-      const target = split * 0.55 * half;
+      const target = split.current * 0.55 * half;
       meshRef.current.position.x += (target - meshRef.current.position.x) * Math.min(1, delta * 3.5);
 
-      // Vibration: high-frequency micro shake before fracture.
-      const shake = vibration * 0.006;
+      const shake = vibration.current * 0.006;
       meshRef.current.position.y = Math.sin(t * 1.6) * 0.04 + (Math.random() - 0.5) * shake;
 
-      // Independent slow rotation once separated.
-      meshRef.current.rotation.y += delta * (0.04 + split * 0.05 * half);
+      meshRef.current.rotation.y += delta * 0.04 * (1 - split.current * 0.85);
       meshRef.current.rotation.x = Math.sin(t * 0.2) * 0.08;
     }
   });
 
   return (
-    <mesh ref={meshRef} geometry={geometry} castShadow receiveShadow>
+    <mesh ref={meshRef} geometry={geometry}>
       <shaderMaterial
         ref={matRef}
         uniforms={uniforms}
         vertexShader={planetVertex}
         fragmentShader={planetFragment}
-        clippingPlanes={[new THREE.Plane(new THREE.Vector3(half, 0, 0), 0)]}
-        clipShadows
+        side={THREE.DoubleSide}
       />
     </mesh>
   );
@@ -69,29 +81,40 @@ export function Planet({
   split,
   crackGlow,
   vibration,
+  detail = 64,
 }: {
-  split: number;
-  crackGlow: number;
-  vibration: number;
+  split: Ref;
+  crackGlow: Ref;
+  vibration: Ref;
+  detail?: number;
 }) {
   const groupRef = useRef<THREE.Group>(null);
+  const coreRef = useRef<THREE.Mesh>(null);
+
   useFrame((state, delta) => {
-    if (!groupRef.current) return;
-    const t = state.clock.elapsedTime;
-    groupRef.current.position.y = Math.sin(t * 0.4) * 0.08;
-    groupRef.current.rotation.y += delta * 0.05;
+    if (groupRef.current) {
+      const t = state.clock.elapsedTime;
+      groupRef.current.position.y = Math.sin(t * 0.4) * 0.08;
+      groupRef.current.rotation.y += delta * 0.05 * (1 - split.current * 0.9);
+    }
+    const mat = coreRef.current?.material as THREE.MeshBasicMaterial | undefined;
+    if (mat) {
+      mat.opacity = Math.min(1, split.current * 1.6) * 0.45 + crackGlow.current * 0.2;
+    }
   });
+
   return (
-    <group ref={groupRef} scale={2.2}>
-      <PlanetHalf half={-1} split={split} crackGlow={crackGlow} vibration={vibration} />
-      <PlanetHalf half={1} split={split} crackGlow={crackGlow} vibration={vibration} />
-      <mesh>
-        <sphereGeometry args={[0.15, 32, 32]} />
+    <group ref={groupRef} scale={0.8}>
+      <PlanetHalf half={-1} split={split} crackGlow={crackGlow} vibration={vibration} detail={detail} />
+      <PlanetHalf half={1} split={split} crackGlow={crackGlow} vibration={vibration} detail={detail} />
+      <mesh ref={coreRef}>
+        <sphereGeometry args={[0.5, 24, 24]} />
         <meshBasicMaterial
           color={"#fff8e0"}
           transparent
-          opacity={Math.min(1, split * 1.5) * 0.35 + crackGlow * 0.25}
+          opacity={0}
           blending={THREE.AdditiveBlending}
+          depthWrite={false}
         />
       </mesh>
     </group>

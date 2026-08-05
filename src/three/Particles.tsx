@@ -2,7 +2,7 @@ import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-export function Particles({ count = 600, spread = 6 }: { count?: number; spread?: number }) {
+export function Particles({ count = 320, spread = 6 }: { count?: number; spread?: number }) {
   const ref = useRef<THREE.Points>(null);
 
   const { positions, speeds } = useMemo(() => {
@@ -17,29 +17,25 @@ export function Particles({ count = 600, spread = 6 }: { count?: number; spread?
     return { positions, speeds };
   }, [count, spread]);
 
-  useFrame((state) => {
-    const t = state.clock.elapsedTime;
-    if (!ref.current) return;
-    const attr = ref.current.geometry.getAttribute("position") as THREE.BufferAttribute;
+  // Drift the whole cloud on the GPU-friendly path: only mutate Y and wrap.
+  useFrame(() => {
+    const pts = ref.current;
+    if (!pts) return;
+    const attr = pts.geometry.getAttribute("position") as THREE.BufferAttribute;
+    const arr = attr.array as Float32Array;
+    const half = spread / 2;
     for (let i = 0; i < count; i++) {
       const iy = i * 3 + 1;
-      attr.array[iy] = (attr.array[iy] as number) + speeds[i] * 0.005;
-      if ((attr.array[iy] as number) > spread / 2) attr.array[iy] = -spread / 2;
-      attr.array[i * 3] += Math.sin(t * 0.2 + i) * 0.0008;
+      arr[iy] += speeds[i]! * 0.005;
+      if (arr[iy]! > half) arr[iy] = -half;
     }
     attr.needsUpdate = true;
   });
 
   return (
-    <points ref={ref}>
+    <points ref={ref} frustumCulled={false}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-          count={count}
-          array={positions}
-          itemSize={3}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
         size={0.012}

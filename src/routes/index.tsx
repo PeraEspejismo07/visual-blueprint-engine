@@ -1,27 +1,32 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 import { SceneMount } from "@/three/SceneMount";
+import { useScrollProgress } from "@/three/useScrollProgress";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Carbofile — Menos archivos, menos huella, más planeta" },
+      {
+        name: "description",
+        content:
+          "Carbofile es el agente de IA en tu navegador que borra los archivos que ya no necesitas y convierte cada limpieza en CO₂ evitado.",
+      },
+      { property: "og:title", content: "Carbofile — Menos archivos, menos huella" },
+      {
+        property: "og:description",
+        content: "Agente de IA que limpia tu basura digital y mide el CO₂ que evitas.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-function useScroll() {
-  const [p, setP] = useState(0);
-  useEffect(() => {
-    const on = () => {
-      const h = document.documentElement;
-      setP(h.scrollTop / (h.scrollHeight - h.clientHeight || 1));
-    };
-    on();
-    window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
-  }, []);
-  return p;
-}
 
 function Index() {
-  const p = useScroll();
+  const p = useScrollProgress();
+
 
   return (
     <main className="relative min-h-[500vh] bg-background text-foreground">
@@ -199,9 +204,15 @@ function Index() {
             <span className="h-2 w-2 rounded-full bg-moss" />
             <span>Carbofile Systems</span>
           </div>
+          <nav className="flex items-center gap-6">
+            <Link to="/privacy" className="hover:text-foreground transition">Privacidad</Link>
+            <Link to="/terms" className="hover:text-foreground transition">Términos</Link>
+            <a href="mailto:hola@carbofile.com" className="hover:text-foreground transition">Contacto</a>
+          </nav>
           <p>© MMXXVI — Menos bytes, más planeta. {(p * 100).toFixed(0)}%</p>
         </div>
       </footer>
+
     </main>
   );
 }
