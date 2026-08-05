@@ -15,12 +15,16 @@ type Props = {
 
 // One geometry instance shared by both halves (they are clipped, not cut),
 // so the heavy icosphere is only built and uploaded to the GPU once.
-const geometryCache = new Map<number, THREE.IcosahedronGeometry>();
-function getGeometry(detail: number) {
-  let g = geometryCache.get(detail);
+const geometryCache = new Map<string, THREE.SphereGeometry>();
+function getGeometry(detail: number, half: -1 | 1) {
+  const key = `${detail}:${half}`;
+  let g = geometryCache.get(key);
   if (!g) {
-    g = new THREE.IcosahedronGeometry(1, detail);
-    geometryCache.set(detail, g);
+    // True hemisphere in local space: the cut plane rotates and travels with
+    // the mesh, so the fracture stays clean at any separation or rotation.
+    const seg = Math.max(32, detail * 2);
+    g = new THREE.SphereGeometry(1, seg, seg, half === 1 ? -Math.PI / 2 : Math.PI / 2, Math.PI);
+    geometryCache.set(key, g);
   }
   return g;
 }
@@ -40,8 +44,7 @@ export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props)
     [],
   );
 
-  const geometry = useMemo(() => getGeometry(detail), [detail]);
-  const clipping = useMemo(() => [new THREE.Plane(new THREE.Vector3(half, 0, 0), 0)], [half]);
+  const geometry = useMemo(() => getGeometry(detail, half), [detail, half]);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
@@ -56,7 +59,7 @@ export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props)
       const shake = vibration.current * 0.006;
       meshRef.current.position.y = Math.sin(t * 1.6) * 0.04 + (Math.random() - 0.5) * shake;
 
-      meshRef.current.rotation.y += delta * (0.04 + split.current * 0.05 * half);
+      meshRef.current.rotation.y += delta * 0.04 * (1 - split.current * 0.85);
       meshRef.current.rotation.x = Math.sin(t * 0.2) * 0.08;
     }
   });
@@ -68,7 +71,7 @@ export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props)
         uniforms={uniforms}
         vertexShader={planetVertex}
         fragmentShader={planetFragment}
-        clippingPlanes={clipping}
+        side={THREE.DoubleSide}
       />
     </mesh>
   );
