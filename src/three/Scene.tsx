@@ -61,7 +61,7 @@ export function Scene({ quality = "high" }: { quality?: "high" | "low" }) {
       <directionalLight position={[3, 4, 2]} intensity={1.5} color="#f6f0e0" />
       <directionalLight position={[-4, -1, -2]} intensity={0.35} color="#a8c0a0" />
 
-      {false && <Planet split={split} crackGlow={glow} vibration={vib} detail={cfg.detail} />}
+      <Planet split={split} crackGlow={glow} vibration={vib} detail={cfg.detail} />
       <Orbits />
       <Particles count={cfg.particles} spread={7} />
 
