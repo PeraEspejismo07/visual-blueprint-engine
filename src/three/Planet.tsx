@@ -95,7 +95,7 @@ export function Planet({
     if (groupRef.current) {
       const t = state.clock.elapsedTime;
       groupRef.current.position.y = Math.sin(t * 0.4) * 0.08;
-      groupRef.current.rotation.y += delta * 0.05;
+      groupRef.current.rotation.y += delta * 0.05 * (1 - split.current * 0.9);
     }
     const mat = coreRef.current?.material as THREE.MeshBasicMaterial | undefined;
     if (mat) {
