@@ -1,27 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 import { SceneMount } from "@/three/SceneMount";
+import { useScrollProgress } from "@/three/useScrollProgress";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-function useScroll() {
-  const [p, setP] = useState(0);
-  useEffect(() => {
-    const on = () => {
-      const h = document.documentElement;
-      setP(h.scrollTop / (h.scrollHeight - h.clientHeight || 1));
-    };
-    on();
-    window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
-  }, []);
-  return p;
-}
-
 function Index() {
-  const p = useScroll();
+  const p = useScrollProgress();
+
 
   return (
     <main className="relative min-h-[500vh] bg-background text-foreground">
