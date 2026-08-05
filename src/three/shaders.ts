@@ -62,6 +62,19 @@ float fbm(vec3 p){
   return v;
 }
 
+// Cheap 3-octave variant for per-fragment detail (keeps the GPU cost low
+// while staying crisp thanks to the higher input frequencies).
+float fbm3(vec3 p){
+  float v = 0.0;
+  float a = 0.5;
+  for(int i=0;i<3;i++){
+    v += a * snoise(p);
+    p *= 2.05;
+    a *= 0.5;
+  }
+  return v;
+}
+
 // Ridged noise for crack veins
 float ridge(vec3 p){
   return 1.0 - abs(snoise(p));
@@ -154,13 +167,13 @@ void main(){
   float rim = pow(1.0 - clamp(dot(N, vec3(0.0,0.0,1.0)), 0.0, 1.0), 2.5);
 
   // Stone base with high-frequency detail.
-  float stoneNoise = fbm(vPosO * 8.0);
+  float stoneNoise = fbm3(vPosO * 8.0) + fbm3(vPosO * 24.0) * 0.22;
   vec3 stone = mix(STONE_DARK, STONE_LIGHT, smoothstep(-0.5, 0.9, stoneNoise + vHeight));
 
   // Moss layered noise + tiny flowers (very sparse).
-  float mossN = fbm(vPosO * 14.0 + uTime * 0.02);
+  float mossN = fbm3(vPosO * 16.0 + uTime * 0.02) + fbm3(vPosO * 38.0) * 0.25;
   vec3 moss = mix(MOSS_DARK, MOSS_LIGHT, smoothstep(-0.3, 0.9, mossN));
-  float flowerMask = smoothstep(0.92, 0.98, fbm(vPosO * 22.0 + 3.1)) * vMoss;
+  float flowerMask = smoothstep(0.92, 0.98, fbm3(vPosO * 22.0 + 3.1)) * vMoss;
   moss = mix(moss, FLOWER, flowerMask * 0.85);
 
   vec3 surface = mix(stone, moss, smoothstep(0.15, 0.55, vMoss));
@@ -177,8 +190,9 @@ void main(){
   lit += surface * rim * 0.12;
   lit += emissive;
 
-  // Deepen darks for cinematic feel.
+  // Deepen darks + micro contrast for a crisper, more defined surface.
   lit = pow(lit, vec3(1.05));
+  lit = mix(lit, clamp((lit - 0.5) * 1.14 + 0.5, 0.0, 4.0), 0.55);
 
   gl_FragColor = vec4(lit, 1.0);
 }
