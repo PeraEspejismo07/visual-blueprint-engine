@@ -96,13 +96,17 @@ export function Planet({
     if (groupRef.current) {
       const t = state.clock.elapsedTime;
       groupRef.current.position.y = Math.sin(t * 0.4) * 0.08;
+      // All spin happens here, on the whole planet, so the fracture plane is
+      // carried along and both halves always face each other.
       groupRef.current.rotation.y += delta * 0.05 * (1 - split.current * 0.9);
+      groupRef.current.rotation.x = Math.sin(t * 0.2) * 0.06 * (1 - split.current);
     }
     const mat = coreRef.current?.material as THREE.MeshBasicMaterial | undefined;
     if (mat) {
       mat.opacity = Math.min(1, split.current * 1.6) * 0.45 + crackGlow.current * 0.2;
     }
   });
+
 
   return (
     <group ref={groupRef} scale={0.8}>
