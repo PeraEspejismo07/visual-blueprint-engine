@@ -53,16 +53,17 @@ export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props)
       matRef.current.uniforms.uCrackGlow.value = crackGlow.current;
     }
     if (meshRef.current) {
-      const target = split.current * 0.55 * half;
+      // Pure translation along the shared cut axis: the two hemispheres slide
+      // apart in parallel instead of hinging open. Rotation lives on the parent
+      // group so the flat cut faces stay coplanar at every separation amount.
+      const target = split.current * 0.75 * half;
       meshRef.current.position.x += (target - meshRef.current.position.x) * Math.min(1, delta * 3.5);
 
       const shake = vibration.current * 0.006;
-      meshRef.current.position.y = Math.sin(t * 1.6) * 0.04 + (Math.random() - 0.5) * shake;
-
-      meshRef.current.rotation.y += delta * 0.04 * (1 - split.current * 0.85);
-      meshRef.current.rotation.x = Math.sin(t * 0.2) * 0.08;
+      meshRef.current.position.y = (Math.random() - 0.5) * shake;
     }
   });
+
 
   return (
     <mesh ref={meshRef} geometry={geometry}>
@@ -73,9 +74,16 @@ export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props)
         fragmentShader={planetFragment}
         side={THREE.DoubleSide}
       />
+      {/* Solid cut face, so a separated half reads as a sliced rock instead of
+          a hollow bowl. */}
+      <mesh rotation={[0, (half * Math.PI) / 2, 0]}>
+        <circleGeometry args={[1.04, 64]} />
+        <meshStandardMaterial color="#2b2b26" roughness={0.95} metalness={0} side={THREE.DoubleSide} />
+      </mesh>
     </mesh>
   );
 }
+
 
 export function Planet({
   split,
@@ -95,13 +103,17 @@ export function Planet({
     if (groupRef.current) {
       const t = state.clock.elapsedTime;
       groupRef.current.position.y = Math.sin(t * 0.4) * 0.08;
+      // All spin happens here, on the whole planet, so the fracture plane is
+      // carried along and both halves always face each other.
       groupRef.current.rotation.y += delta * 0.05 * (1 - split.current * 0.9);
+      groupRef.current.rotation.x = Math.sin(t * 0.2) * 0.06 * (1 - split.current);
     }
     const mat = coreRef.current?.material as THREE.MeshBasicMaterial | undefined;
     if (mat) {
       mat.opacity = Math.min(1, split.current * 1.6) * 0.45 + crackGlow.current * 0.2;
     }
   });
+
 
   return (
     <group ref={groupRef} scale={0.8}>
