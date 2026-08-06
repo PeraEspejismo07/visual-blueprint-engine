@@ -53,16 +53,17 @@ export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props)
       matRef.current.uniforms.uCrackGlow.value = crackGlow.current;
     }
     if (meshRef.current) {
-      const target = split.current * 0.55 * half;
+      // Pure translation along the shared cut axis: the two hemispheres slide
+      // apart in parallel instead of hinging open. Rotation lives on the parent
+      // group so the flat cut faces stay coplanar at every separation amount.
+      const target = split.current * 0.75 * half;
       meshRef.current.position.x += (target - meshRef.current.position.x) * Math.min(1, delta * 3.5);
 
       const shake = vibration.current * 0.006;
-      meshRef.current.position.y = Math.sin(t * 1.6) * 0.04 + (Math.random() - 0.5) * shake;
-
-      meshRef.current.rotation.y += delta * 0.04 * (1 - split.current * 0.85);
-      meshRef.current.rotation.x = Math.sin(t * 0.2) * 0.08;
+      meshRef.current.position.y = (Math.random() - 0.5) * shake;
     }
   });
+
 
   return (
     <mesh ref={meshRef} geometry={geometry}>
