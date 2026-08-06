@@ -3,8 +3,10 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getOverview, listRecentActions } from "@/lib/dashboard.functions";
+import { Onboarding } from "@/components/dashboard/Onboarding";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ArrowUpRight, HardDrive, Leaf, Zap } from "lucide-react";
+
 
 export const Route = createFileRoute("/_authenticated/dashboard/")({
   component: Overview,
