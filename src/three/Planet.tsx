@@ -56,8 +56,11 @@ export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props)
       // Pure translation along the shared cut axis: the two hemispheres slide
       // apart in parallel instead of hinging open. Rotation lives on the parent
       // group so the flat cut faces stay coplanar at every separation amount.
-      const target = split.current * 0.75 * half;
-      meshRef.current.position.x += (target - meshRef.current.position.x) * Math.min(1, delta * 3.5);
+      // Move each half far enough along the screen-facing cut axis that the
+      // two silhouettes no longer overlap. This must read as two separate
+      // rocks, not as a lid opening over another hemisphere.
+      const target = split.current * 1.35 * half;
+      meshRef.current.position.x += (target - meshRef.current.position.x) * Math.min(1, delta * 4.2);
 
       const shake = vibration.current * 0.006;
       meshRef.current.position.y = (Math.random() - 0.5) * shake;
@@ -103,10 +106,11 @@ export function Planet({
     if (groupRef.current) {
       const t = state.clock.elapsedTime;
       groupRef.current.position.y = Math.sin(t * 0.4) * 0.08;
-      // All spin happens here, on the whole planet, so the fracture plane is
-      // carried along and both halves always face each other.
-      groupRef.current.rotation.y += delta * 0.05 * (1 - split.current * 0.9);
-      groupRef.current.rotation.x = Math.sin(t * 0.2) * 0.06 * (1 - split.current);
+      // Keep the split axis facing the camera. Rotating around Y made one half
+      // pass in front of the other, visually undoing the separation.
+      groupRef.current.rotation.y += (0 - groupRef.current.rotation.y) * Math.min(1, delta * 2.8);
+      groupRef.current.rotation.x = Math.sin(t * 0.2) * 0.035 * (1 - split.current);
+      groupRef.current.rotation.z = Math.sin(t * 0.16) * 0.025 * (1 - split.current);
     }
     const mat = coreRef.current?.material as THREE.MeshBasicMaterial | undefined;
     if (mat) {
