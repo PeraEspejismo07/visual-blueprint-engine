@@ -54,8 +54,22 @@ function Overview() {
 
   const kmEquivalent = useMemo(() => (t.co2 * 6).toFixed(1), [t.co2]);
 
+  // First-run wizard: shown once until the user configures the agent or skips.
+  const [skipped, setSkipped] = useState(false);
+  useEffect(() => {
+    setSkipped(localStorage.getItem("carbofile:onboarded") === "1");
+  }, []);
+  const showOnboarding =
+    !skipped && overview.isSuccess && devices.length === 0 && !rules && (overview.data?.connections.length ?? 0) === 0;
+  const dismiss = () => {
+    localStorage.setItem("carbofile:onboarded", "1");
+    setSkipped(true);
+  };
+
   return (
     <div className="mx-auto max-w-[1400px] px-6 md:px-10 py-8 space-y-8">
+      <Onboarding open={showOnboarding} onDone={dismiss} />
+
       {/* Extension not paired banner */}
       {devices.length === 0 && (
         <div className="rounded-xl border border-moss/40 bg-moss/5 p-5 flex items-center justify-between gap-4">
