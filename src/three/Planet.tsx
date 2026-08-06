@@ -74,9 +74,16 @@ export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props)
         fragmentShader={planetFragment}
         side={THREE.DoubleSide}
       />
+      {/* Solid cut face, so a separated half reads as a sliced rock instead of
+          a hollow bowl. */}
+      <mesh rotation={[0, (half * Math.PI) / 2, 0]}>
+        <circleGeometry args={[1.04, 64]} />
+        <meshStandardMaterial color="#2b2b26" roughness={0.95} metalness={0} side={THREE.DoubleSide} />
+      </mesh>
     </mesh>
   );
 }
+
 
 export function Planet({
   split,
