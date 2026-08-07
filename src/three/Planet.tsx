@@ -20,10 +20,11 @@ function getGeometry(detail: number, half: -1 | 1) {
   const key = `${detail}:${half}`;
   let g = geometryCache.get(key);
   if (!g) {
-    // True hemisphere in local space: the cut plane rotates and travels with
-    // the mesh, so the fracture stays clean at any separation or rotation.
+    // True left/right hemisphere in local space: phi 0..PI keeps x >= 0 and
+    // phi PI..2PI keeps x <= 0, so the cut plane is the vertical y-z plane and
+    // the halves slide sideways with their round side facing outward.
     const seg = Math.max(32, detail * 2);
-    g = new THREE.SphereGeometry(1, seg, seg, half === 1 ? -Math.PI / 2 : Math.PI / 2, Math.PI);
+    g = new THREE.SphereGeometry(1, seg, seg, half === 1 ? 0 : Math.PI, Math.PI);
     geometryCache.set(key, g);
   }
   return g;
@@ -59,7 +60,7 @@ export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props)
       // Move each half far enough along the screen-facing cut axis that the
       // two silhouettes no longer overlap. This must read as two separate
       // rocks, not as a lid opening over another hemisphere.
-      const target = split.current * 2.1 * half;
+      const target = split.current * 1.7 * half;
       meshRef.current.position.x += (target - meshRef.current.position.x) * Math.min(1, delta * 4.2);
 
       const shake = vibration.current * 0.006;
@@ -114,17 +115,17 @@ export function Planet({
     }
     const mat = coreRef.current?.material as THREE.MeshBasicMaterial | undefined;
     if (mat) {
-      mat.opacity = Math.min(1, split.current * 1.6) * 0.45 + crackGlow.current * 0.2;
+      mat.opacity = Math.min(1, split.current * 1.6) * 0.2 + crackGlow.current * 0.1;
     }
   });
 
 
   return (
-    <group ref={groupRef} scale={0.8}>
+    <group ref={groupRef} scale={0.62}>
       <PlanetHalf half={-1} split={split} crackGlow={crackGlow} vibration={vibration} detail={detail} />
       <PlanetHalf half={1} split={split} crackGlow={crackGlow} vibration={vibration} detail={detail} />
       <mesh ref={coreRef}>
-        <sphereGeometry args={[0.5, 24, 24]} />
+        <sphereGeometry args={[0.3, 24, 24]} />
         <meshBasicMaterial
           color={"#fff8e0"}
           transparent
