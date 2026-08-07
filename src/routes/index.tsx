@@ -116,6 +116,61 @@ function Index() {
       </section>
 
 
+      {/* Sección 6 — Navegadores */}
+      <section id="navegadores" className="relative z-10 border-y border-border px-6 py-28 md:px-10 md:py-36">
+        <div className="mx-auto max-w-[1400px]">
+          <div className="grid gap-12 md:grid-cols-12 md:items-end">
+            <div className="md:col-span-7">
+              <p className="eyebrow">Una extensión · cuatro navegadores</p>
+              <h2 className="display mt-6 max-w-[13ch] text-[11vw] md:text-[5.2vw]">
+                Instala una vez. Limpia mientras navegas.
+              </h2>
+            </div>
+            <p className="max-w-md text-sm leading-relaxed text-muted-foreground md:col-span-4 md:col-start-9">
+              Compatible con Google Chrome, Microsoft Edge, Opera, Brave y otros navegadores basados en Chromium.
+              Carbofile observa nuevas descargas, aplica tus reglas y sincroniza solo las métricas con el panel.
+            </p>
+          </div>
+
+          <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4">
+            {BROWSERS.map((b) => (
+              <button
+                key={b.name}
+                type="button"
+                onClick={downloadExtension}
+                className="group flex flex-col items-center gap-5 rounded-2xl border border-border bg-surface/40 p-7 transition hover:border-foreground"
+              >
+                <img src={b.logo} alt={`Logo de ${b.name}`} className="h-14 w-14" loading="lazy" />
+                <span className="rounded-full bg-foreground/10 px-3 py-1 text-xs">{b.name}</span>
+                <span className="flex items-center gap-2 text-[11px] text-muted-foreground group-hover:text-foreground">
+                  <Download className="h-3.5 w-3.5" /> Descargar
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-12 flex flex-wrap gap-x-8 gap-y-4 text-xs text-muted-foreground">
+            <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-moss" /> Análisis local</span>
+            <span className="flex items-center gap-2"><Gauge className="h-4 w-4 text-moss" /> Bajo consumo</span>
+            <span className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-moss" /> Reglas inteligentes</span>
+          </div>
+
+          <ol className="mt-10 grid gap-3 text-xs text-muted-foreground md:grid-cols-4">
+            {[
+              "Descarga y descomprime el archivo",
+              "Abre chrome://extensions (o edge://, brave://, opera://)",
+              "Activa el Modo desarrollador",
+              "Pulsa «Cargar descomprimida» y elige la carpeta",
+            ].map((step, i) => (
+              <li key={step} className="rounded-xl border border-border p-4">
+                <span className="text-foreground">{String(i + 1).padStart(2, "0")}</span> · {step}
+              </li>
+            ))}
+          </ol>
+
+        </div>
+      </section>
+
 
       {/* Sección 2 — Escala */}
       <section className="relative z-10 flex min-h-[100svh] items-end px-6 pb-24 md:px-10">
@@ -221,60 +276,6 @@ function Index() {
         </div>
       </section>
 
-      {/* Sección 6 — Navegadores */}
-      <section id="navegadores" className="relative z-10 border-y border-border px-6 py-28 md:px-10 md:py-36">
-        <div className="mx-auto max-w-[1400px]">
-          <div className="grid gap-12 md:grid-cols-12 md:items-end">
-            <div className="md:col-span-7">
-              <p className="eyebrow">Una extensión · cuatro navegadores</p>
-              <h2 className="display mt-6 max-w-[13ch] text-[11vw] md:text-[5.2vw]">
-                Instala una vez. Limpia mientras navegas.
-              </h2>
-            </div>
-            <p className="max-w-md text-sm leading-relaxed text-muted-foreground md:col-span-4 md:col-start-9">
-              Compatible con Google Chrome, Microsoft Edge, Opera, Brave y otros navegadores basados en Chromium.
-              Carbofile observa nuevas descargas, aplica tus reglas y sincroniza solo las métricas con el panel.
-            </p>
-          </div>
-
-          <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {BROWSERS.map((b) => (
-              <button
-                key={b.name}
-                type="button"
-                onClick={downloadExtension}
-                className="group flex flex-col items-center gap-5 rounded-2xl border border-border bg-surface/40 p-7 transition hover:border-foreground"
-              >
-                <img src={b.logo} alt={`Logo de ${b.name}`} className="h-14 w-14" loading="lazy" />
-                <span className="rounded-full bg-foreground/10 px-3 py-1 text-xs">{b.name}</span>
-                <span className="flex items-center gap-2 text-[11px] text-muted-foreground group-hover:text-foreground">
-                  <Download className="h-3.5 w-3.5" /> Descargar
-                </span>
-              </button>
-            ))}
-          </div>
-
-          <div className="mt-12 flex flex-wrap gap-x-8 gap-y-4 text-xs text-muted-foreground">
-            <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-moss" /> Análisis local</span>
-            <span className="flex items-center gap-2"><Gauge className="h-4 w-4 text-moss" /> Bajo consumo</span>
-            <span className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-moss" /> Reglas inteligentes</span>
-          </div>
-
-          <ol className="mt-10 grid gap-3 text-xs text-muted-foreground md:grid-cols-4">
-            {[
-              "Descarga y descomprime el archivo",
-              "Abre chrome://extensions (o edge://, brave://, opera://)",
-              "Activa el Modo desarrollador",
-              "Pulsa «Cargar descomprimida» y elige la carpeta",
-            ].map((step, i) => (
-              <li key={step} className="rounded-xl border border-border p-4">
-                <span className="text-foreground">{String(i + 1).padStart(2, "0")}</span> · {step}
-              </li>
-            ))}
-          </ol>
-
-        </div>
-      </section>
 
       {/* Sección 7 — Precios */}
       <section id="precios" className="relative z-10 px-6 py-28 md:px-10 md:py-40">
