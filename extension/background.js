@@ -47,12 +47,15 @@ async function sendEvent(evt) {
 
 chrome.downloads.onCreated.addListener(async (item) => {
   const action = classify(item.filename, item.fileSize || item.totalBytes || 0);
-  await sendEvent({
+  const evt = {
     source: "Descargas",
     action_type: action,
     file_name: (item.filename || "").split(/[\\/]/).pop() || item.url,
     size_bytes: item.fileSize || item.totalBytes || 0,
-  });
+  };
+  const { recent } = await chrome.storage.local.get("recent");
+  await chrome.storage.local.set({ recent: [{ ...evt, at: Date.now() }, ...(recent || [])].slice(0, 30) });
+  await sendEvent(evt);
 });
 
 chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
