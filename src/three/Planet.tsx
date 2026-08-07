@@ -59,7 +59,7 @@ export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props)
       // Move each half far enough along the screen-facing cut axis that the
       // two silhouettes no longer overlap. This must read as two separate
       // rocks, not as a lid opening over another hemisphere.
-      const target = split.current * 1.35 * half;
+      const target = split.current * 2.1 * half;
       meshRef.current.position.x += (target - meshRef.current.position.x) * Math.min(1, delta * 4.2);
 
       const shake = vibration.current * 0.006;
