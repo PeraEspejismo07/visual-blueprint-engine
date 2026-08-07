@@ -7,7 +7,7 @@ const BROWSERS: { name: string; logo: string }[] = [
   { name: "Chrome", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/chrome@2.0.0/chrome_64x64.png" },
   { name: "Edge", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/edge@2.0.5/edge_64x64.png" },
   { name: "Brave", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/brave@3.0.7/brave_64x64.png" },
-  { name: "Opera", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/opera@2.1.4/opera_64x64.png" },
+  { name: "Opera", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/opera@1.1.11/opera_64x64.png" },
 ];
 
 function downloadExtension() {
