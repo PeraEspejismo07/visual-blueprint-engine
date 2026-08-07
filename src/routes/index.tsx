@@ -1,7 +1,30 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Check, Chrome, Download, Gauge, ShieldCheck, Sparkles } from "lucide-react";
+import { Check, Download, Gauge, ShieldCheck, Sparkles } from "lucide-react";
 import { SceneMount } from "@/three/SceneMount";
 import { useScrollProgress } from "@/three/useScrollProgress";
+
+const BROWSERS: { name: string; logo: string }[] = [
+  { name: "Chrome", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/chrome@2.0.0/chrome_64x64.png" },
+  { name: "Edge", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/edge@2.0.5/edge_64x64.png" },
+  { name: "Brave", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/brave@3.0.7/brave_64x64.png" },
+  { name: "Opera", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/opera@1.1.11/opera_64x64.png" },
+];
+
+function downloadExtension() {
+  fetch("/carbofile-extension.zip")
+    .then((res) => {
+      if (!res.ok) throw new Error("No se pudo descargar la extensión");
+      return res.blob();
+    })
+    .then((blob) => {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "carbofile-extension.zip";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    })
+    .catch((err) => alert(err.message));
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -214,12 +237,20 @@ function Index() {
             </p>
           </div>
 
-          <div className="mt-16 grid grid-cols-2 border-l border-t border-border md:grid-cols-4">
-            {["Google Chrome", "Microsoft Edge", "Opera", "Brave / Chromium"].map((browser) => (
-              <div key={browser} className="flex min-h-32 items-center gap-3 border-b border-r border-border p-5">
-                <Chrome className="h-5 w-5 text-moss" aria-hidden />
-                <span className="text-sm">{browser}</span>
-              </div>
+          <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4">
+            {BROWSERS.map((b) => (
+              <button
+                key={b.name}
+                type="button"
+                onClick={downloadExtension}
+                className="group flex flex-col items-center gap-5 rounded-2xl border border-border bg-surface/40 p-7 transition hover:border-foreground"
+              >
+                <img src={b.logo} alt={`Logo de ${b.name}`} className="h-14 w-14" loading="lazy" />
+                <span className="rounded-full bg-foreground/10 px-3 py-1 text-xs">{b.name}</span>
+                <span className="flex items-center gap-2 text-[11px] text-muted-foreground group-hover:text-foreground">
+                  <Download className="h-3.5 w-3.5" /> Descargar
+                </span>
+              </button>
             ))}
           </div>
 
@@ -228,6 +259,20 @@ function Index() {
             <span className="flex items-center gap-2"><Gauge className="h-4 w-4 text-moss" /> Bajo consumo</span>
             <span className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-moss" /> Reglas inteligentes</span>
           </div>
+
+          <ol className="mt-10 grid gap-3 text-xs text-muted-foreground md:grid-cols-4">
+            {[
+              "Descarga y descomprime el archivo",
+              "Abre chrome://extensions (o edge://, brave://, opera://)",
+              "Activa el Modo desarrollador",
+              "Pulsa «Cargar descomprimida» y elige la carpeta",
+            ].map((step, i) => (
+              <li key={step} className="rounded-xl border border-border p-4">
+                <span className="text-foreground">{String(i + 1).padStart(2, "0")}</span> · {step}
+              </li>
+            ))}
+          </ol>
+
         </div>
       </section>
 

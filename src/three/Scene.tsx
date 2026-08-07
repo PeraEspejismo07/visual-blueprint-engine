@@ -19,10 +19,10 @@ export function Scene({ quality = "high" }: { quality?: "high" | "low" }) {
     return subscribeScroll((p) => {
       scrollY.current = p;
       // Timeline: 0-0.2 idle, 0.2-0.35 vibration + crack glow, 0.35-0.6 split.
-      glow.current = THREE.MathUtils.smoothstep(p, 0.15, 0.55);
+      glow.current = THREE.MathUtils.smoothstep(p, 0.04, 0.3);
       vib.current =
-        THREE.MathUtils.smoothstep(p, 0.18, 0.32) * (1 - THREE.MathUtils.smoothstep(p, 0.32, 0.42));
-      split.current = THREE.MathUtils.smoothstep(p, 0.32, 0.62);
+        THREE.MathUtils.smoothstep(p, 0.03, 0.1) * (1 - THREE.MathUtils.smoothstep(p, 0.1, 0.2));
+      split.current = THREE.MathUtils.smoothstep(p, 0.08, 0.4);
     });
   }, []);
 
