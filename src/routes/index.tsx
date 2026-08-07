@@ -117,7 +117,7 @@ function Index() {
 
 
       {/* Sección 6 — Navegadores */}
-      <section id="navegadores" className="relative z-10 border-y border-border px-6 py-28 md:px-10 md:py-36">
+      <section id="navegadores" className="relative z-10 border-y border-border bg-background/90 px-6 py-28 backdrop-blur-md md:px-10 md:py-36">
         <div className="mx-auto max-w-[1400px]">
           <div className="grid gap-12 md:grid-cols-12 md:items-end">
             <div className="md:col-span-7">

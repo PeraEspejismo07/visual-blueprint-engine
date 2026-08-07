@@ -20,10 +20,11 @@ function getGeometry(detail: number, half: -1 | 1) {
   const key = `${detail}:${half}`;
   let g = geometryCache.get(key);
   if (!g) {
-    // True hemisphere in local space: the cut plane rotates and travels with
-    // the mesh, so the fracture stays clean at any separation or rotation.
+    // True left/right hemisphere in local space: phi 0..PI keeps x >= 0 and
+    // phi PI..2PI keeps x <= 0, so the cut plane is the vertical y-z plane and
+    // the halves slide sideways with their round side facing outward.
     const seg = Math.max(32, detail * 2);
-    g = new THREE.SphereGeometry(1, seg, seg, half === 1 ? -Math.PI / 2 : Math.PI / 2, Math.PI);
+    g = new THREE.SphereGeometry(1, seg, seg, half === 1 ? 0 : Math.PI, Math.PI);
     geometryCache.set(key, g);
   }
   return g;
