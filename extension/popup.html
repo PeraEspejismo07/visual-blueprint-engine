@@ -1,22 +1,120 @@
 <!doctype html>
-<html>
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <style>
-      body { width: 300px; margin: 0; padding: 16px; background: #161f19; color: #eae6df; font-family: -apple-system, sans-serif; font-size: 13px; }
-      h1 { font-size: 14px; font-weight: 500; margin: 0 0 8px; }
-      .row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-top: 1px solid rgba(234,230,223,.08); }
-      .dot { display: inline-block; height: 8px; width: 8px; border-radius: 999px; background: #6f7f4a; margin-right: 6px; }
-      button { background: #eae6df; color: #161f19; border: 0; border-radius: 999px; padding: 6px 12px; font-size: 12px; cursor: pointer; }
-      a { color: #6f7f4a; text-decoration: none; font-size: 12px; }
+      :root {
+        --bg: #0e110f;
+        --panel: #171b18;
+        --panel-2: #1d221e;
+        --line: rgba(234, 230, 223, 0.08);
+        --text: #eae6df;
+        --muted: #8b8b84;
+        --moss: #8aa257;
+      }
+      * { box-sizing: border-box; }
+      body {
+        width: 360px; margin: 0; background: var(--bg); color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 13px;
+      }
+      .titlebar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 10px 14px; background: #fff; color: #111;
+        font-weight: 600; font-size: 13px;
+      }
+      .titlebar button { background: none; border: 0; font-size: 15px; color: #444; cursor: pointer; }
+      .account {
+        display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+        background: var(--panel); border-bottom: 1px solid var(--line);
+      }
+      .avatar {
+        height: 34px; width: 34px; border-radius: 999px; flex: none;
+        background: radial-gradient(circle at 35% 30%, #b9cf83, #5d6f3d 70%);
+      }
+      .account .who { flex: 1; min-width: 0; }
+      .account .mail { font-size: 12px; color: var(--moss); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .account .dev { font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+      .icons { display: flex; gap: 12px; color: var(--muted); }
+      .icons button { background: none; border: 0; color: inherit; cursor: pointer; padding: 0; line-height: 0; }
+      .banner {
+        margin: 12px 14px; padding: 12px; border-radius: 12px; background: var(--panel-2);
+        display: flex; gap: 10px; align-items: flex-start; position: relative;
+      }
+      .banner p { margin: 0; font-size: 12px; font-weight: 600; line-height: 1.35; }
+      .banner span { display: block; font-weight: 400; color: var(--muted); margin-top: 3px; }
+      .banner .close { position: absolute; top: 8px; right: 10px; background: none; border: 0; color: var(--muted); cursor: pointer; }
+      .tabs { display: flex; gap: 16px; padding: 4px 14px 10px; align-items: baseline; }
+      .tabs button {
+        background: none; border: 0; padding: 0; cursor: pointer; font-size: 17px;
+        font-weight: 600; color: #4c524d;
+      }
+      .tabs button.active { color: var(--text); }
+      .tabs .more { margin-left: auto; color: var(--muted); font-size: 18px; }
+      .list { padding: 0 14px 8px; max-height: 300px; overflow-y: auto; }
+      .item {
+        display: flex; align-items: center; gap: 10px; padding: 11px 12px; margin-bottom: 8px;
+        background: var(--panel); border-radius: 12px;
+      }
+      .badge {
+        height: 30px; width: 30px; border-radius: 999px; flex: none; display: grid; place-items: center;
+        background: #262c26; font-size: 13px;
+      }
+      .item .meta { flex: 1; min-width: 0; }
+      .item .name { font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+      .item .sub, .item .amt small { color: var(--muted); font-size: 12px; }
+      .item .amt { text-align: right; font-weight: 600; font-size: 13px; }
+      .item .amt small { display: block; font-weight: 400; }
+      .tag { font-size: 10px; padding: 1px 6px; border-radius: 999px; background: #2f3730; color: #c3c9bd; font-weight: 500; }
+      .empty { color: var(--muted); text-align: center; padding: 26px 10px; font-size: 12px; }
+      .nav {
+        display: flex; justify-content: space-around; align-items: center;
+        border-top: 1px solid var(--line); padding: 10px 0; background: var(--panel);
+      }
+      .nav button { background: none; border: 0; color: #6d736c; cursor: pointer; line-height: 0; }
+      .nav button.active { color: var(--moss); }
     </style>
   </head>
   <body>
-    <h1>Carbofile</h1>
-    <p id="status" style="color:#8b8b84; font-size:12px; margin:0 0 12px"><span class="dot"></span> Cargando…</p>
-    <div class="row"><span>Pausar 1 hora</span><button id="pause">Pausar</button></div>
-    <div class="row"><span>Ajustes</span><a href="#" id="opts">Vincular</a></div>
-    <div class="row"><span>Panel web</span><a href="#" id="dash">Abrir</a></div>
+    <div class="titlebar"><span>Carbofile</span><button id="close" title="Cerrar">&times;</button></div>
+
+    <div class="account">
+      <div class="avatar"></div>
+      <div class="who">
+        <div class="mail" id="mail">Sin vincular</div>
+        <div class="dev">Este equipo <span class="tag" id="state">—</span></div>
+      </div>
+      <div class="icons">
+        <button id="dash" title="Panel web">🖥</button>
+        <button id="opts" title="Ajustes">⚙</button>
+        <button id="pause" title="Pausar agente">⏸</button>
+      </div>
+    </div>
+
+    <div class="banner" id="banner">
+      <div class="badge">🌱</div>
+      <p>
+        Carbofile vigila tus descargas
+        <span>Detecta duplicados, instaladores y capturas y los limpia por ti.</span>
+      </p>
+      <button class="close" id="banner-close">&times;</button>
+    </div>
+
+    <div class="tabs">
+      <button class="active" data-tab="files">Archivos</button>
+      <button data-tab="sources">Fuentes</button>
+      <button data-tab="impact">Impacto</button>
+      <span class="more">···</span>
+    </div>
+
+    <div class="list" id="list"></div>
+
+    <div class="nav">
+      <button class="active" data-tab="files" title="Inicio">⌂</button>
+      <button data-tab="sources" title="Fuentes">⇄</button>
+      <button data-tab="impact" title="Historial">◷</button>
+      <button id="nav-dash" title="Panel">⌕</button>
+    </div>
+
     <script src="popup.js"></script>
   </body>
 </html>
