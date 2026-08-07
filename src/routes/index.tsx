@@ -1,7 +1,30 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Check, Chrome, Download, Gauge, ShieldCheck, Sparkles } from "lucide-react";
+import { Check, Download, Gauge, ShieldCheck, Sparkles } from "lucide-react";
 import { SceneMount } from "@/three/SceneMount";
 import { useScrollProgress } from "@/three/useScrollProgress";
+
+const BROWSERS: { name: string; logo: string }[] = [
+  { name: "Chrome", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/chrome@2.0.0/chrome_64x64.png" },
+  { name: "Edge", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/edge@2.0.5/edge_64x64.png" },
+  { name: "Brave", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/brave@3.0.7/brave_64x64.png" },
+  { name: "Opera", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/opera@2.1.4/opera_64x64.png" },
+];
+
+function downloadExtension() {
+  fetch("/carbofile-extension.zip")
+    .then((res) => {
+      if (!res.ok) throw new Error("No se pudo descargar la extensión");
+      return res.blob();
+    })
+    .then((blob) => {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "carbofile-extension.zip";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    })
+    .catch((err) => alert(err.message));
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
