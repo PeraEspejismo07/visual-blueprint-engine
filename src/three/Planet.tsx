@@ -56,7 +56,7 @@ export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props)
     if (meshRef.current) {
       // One planet that cracks open: the halves slide apart just enough to
       // reveal the fracture, never so far that they read as two planets.
-      const target = split.current * 0.42 * half;
+      const target = split.current * 0.6 * half;
       meshRef.current.position.x += (target - meshRef.current.position.x) * Math.min(1, delta * 4.2);
 
       const shake = vibration.current * 0.006;
