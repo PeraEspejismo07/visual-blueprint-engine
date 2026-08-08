@@ -54,19 +54,16 @@ export function PlanetHalf({ half, split, crackGlow, vibration, detail }: Props)
       matRef.current.uniforms.uCrackGlow.value = crackGlow.current;
     }
     if (meshRef.current) {
-      // Pure translation along the shared cut axis: the two hemispheres slide
-      // apart in parallel instead of hinging open. Rotation lives on the parent
-      // group so the flat cut faces stay coplanar at every separation amount.
-      // Move each half far enough along the screen-facing cut axis that the
-      // two silhouettes no longer overlap. This must read as two separate
-      // rocks, not as a lid opening over another hemisphere.
-      const target = split.current * 1.7 * half;
+      // One planet that cracks open: the halves slide apart just enough to
+      // reveal the fracture, never so far that they read as two planets.
+      const target = split.current * 0.42 * half;
       meshRef.current.position.x += (target - meshRef.current.position.x) * Math.min(1, delta * 4.2);
 
       const shake = vibration.current * 0.006;
       meshRef.current.position.y = (Math.random() - 0.5) * shake;
     }
   });
+
 
 
   return (
