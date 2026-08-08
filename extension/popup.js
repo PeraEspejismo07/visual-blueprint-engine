@@ -24,17 +24,14 @@ function render() {
   );
 
   if (state.tab === "files") {
-    if (!state.token) {
-      list.innerHTML = `<div class="item" style="flex-direction:column;align-items:stretch;gap:8px;padding:16px">
+    const pairCard = state.token
+      ? ""
+      : `<div class="item" style="flex-direction:column;align-items:stretch;gap:8px;padding:16px">
         <div class="name">Vincula este equipo</div>
-        <div class="sub">Genera un código de 6 dígitos en tu panel de Carbofile y vincula el navegador para sincronizar tu impacto.</div>
+        <div class="sub">Genera un código de 6 dígitos en tu panel de Carbofile y sincroniza tu impacto.</div>
         <button id="pair-cta" style="margin-top:6px;background:var(--moss);color:#0e110f;border:0;border-radius:999px;padding:9px 14px;font-weight:600;cursor:pointer">Vincular ahora</button>
-      </div>` + (state.recent.length ? "" : `<div class="empty">Mientras tanto, Carbofile ya analiza tus descargas en local.</div>`);
-      const cta = document.getElementById("pair-cta");
-      if (cta) cta.addEventListener("click", () => chrome.runtime.openOptionsPage());
-      if (!state.recent.length) return;
-    }
-    list.innerHTML += state.recent.length
+      </div>`;
+    const items = state.recent.length
       ? state.recent
           .map((f) =>
             row(
@@ -47,8 +44,12 @@ function render() {
           )
           .join("")
       : `<div class="empty">Todavía no hay actividad.<br />Descarga un archivo y Carbofile lo analizará.</div>`;
+    list.innerHTML = pairCard + items;
+    const cta = document.getElementById("pair-cta");
+    if (cta) cta.addEventListener("click", () => chrome.runtime.openOptionsPage());
     return;
   }
+
 
 
   if (state.tab === "sources") {
