@@ -2,7 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { getOverview, listRecentActions } from "@/lib/dashboard.functions";
+import { getOverview, listRecentActions, getUsage } from "@/lib/dashboard.functions";
+import { UsageMeter, UpgradeModal } from "@/components/dashboard/UsageMeter";
 import { Onboarding } from "@/components/dashboard/Onboarding";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ArrowUpRight, HardDrive, Leaf, Zap } from "lucide-react";
@@ -27,6 +28,9 @@ function Overview() {
 
   const overview = useQuery({ queryKey: ["overview"], queryFn: () => getOverview() });
   const actions = useQuery({ queryKey: ["actions"], queryFn: () => listRecentActions(), refetchInterval: 15_000 });
+  const usage = useQuery({ queryKey: ["usage"], queryFn: () => getUsage(), refetchInterval: 30_000 });
+
+  const [upgradeDismissed, setUpgradeDismissed] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
@@ -38,6 +42,7 @@ function Overview() {
         () => {
           qc.invalidateQueries({ queryKey: ["actions"] });
           qc.invalidateQueries({ queryKey: ["overview"] });
+          qc.invalidateQueries({ queryKey: ["usage"] });
         },
       )
       .subscribe();
@@ -69,6 +74,10 @@ function Overview() {
   return (
     <div className="mx-auto max-w-[1400px] px-6 md:px-10 py-8 space-y-8">
       <Onboarding open={showOnboarding} onDone={dismiss} />
+      <UpgradeModal
+        open={!showOnboarding && !upgradeDismissed && !!usage.data?.blocked}
+        onClose={() => setUpgradeDismissed(true)}
+      />
 
       {/* Extension not paired banner */}
       {devices.length === 0 && (
@@ -173,6 +182,8 @@ function Overview() {
               Cada GB almacenado en la nube emite ~4,4 kg de CO₂ al año.
             </p>
           </div>
+
+          {usage.data && <UsageMeter usage={usage.data} />}
 
           <div className="rounded-xl border border-border p-5">
             <p className="text-[11px] uppercase tracking-widest text-muted-foreground">Estado del agente</p>

@@ -154,3 +154,25 @@ export const pingStreak = createServerFn({ method: "POST" })
     await context.supabase.rpc("update_streak", { p_user_id: context.userId });
     return { ok: true };
   });
+
+export const getUsage = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const FREE_LIMIT = 500 * 1_000_000;
+    const { data, error } = await (context.supabase as any).rpc("month_cleanup_usage", {
+      p_user_id: context.userId,
+    });
+    if (error) {
+      return { plan: "free" as const, usedBytes: 0, limitBytes: FREE_LIMIT, blocked: false };
+    }
+    const row = Array.isArray(data) ? data[0] : data;
+    const plan = (row?.plan ?? "free") as "free" | "pro";
+    const usedBytes = Number(row?.used_bytes ?? 0);
+    const limitBytes = Number(row?.limit_bytes ?? FREE_LIMIT);
+    return {
+      plan,
+      usedBytes,
+      limitBytes,
+      blocked: plan !== "pro" && limitBytes > 0 && usedBytes >= limitBytes,
+    };
+  });

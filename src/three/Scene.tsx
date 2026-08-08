@@ -29,8 +29,8 @@ export function Scene({ quality = "high" }: { quality?: "high" | "low" }) {
   const cfg = useMemo(
     () =>
       quality === "high"
-        ? { dpr: [1, 2] as [number, number], detail: 64, particles: 320, samples: 4 }
-        : { dpr: [1, 1.5] as [number, number], detail: 24, particles: 120, samples: 0 },
+        ? { dpr: [1.5, 2.5] as [number, number], detail: 96, particles: 320, samples: 8 }
+        : { dpr: [1, 2] as [number, number], detail: 40, particles: 120, samples: 2 },
     [quality],
   );
 
@@ -40,7 +40,7 @@ export function Scene({ quality = "high" }: { quality?: "high" | "low" }) {
       dpr={cfg.dpr}
       performance={{ min: 0.5 }}
       gl={{
-        antialias: false,
+        antialias: true,
         powerPreference: "high-performance",
         alpha: false,
         stencil: false,
