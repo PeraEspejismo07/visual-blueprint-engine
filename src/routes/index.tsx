@@ -291,10 +291,10 @@ function Index() {
           <div className="mt-16 grid border-l border-t border-border md:grid-cols-2">
             <article className="border-b border-r border-border p-7 md:p-10">
               <p className="text-sm">Free</p>
-              <div className="mt-8 flex items-end gap-2"><span className="display text-6xl">€0</span><span className="mb-1 text-xs text-muted-foreground">para siempre</span></div>
+              <div className="mt-8 flex items-end gap-2"><span className="display text-6xl">S/0</span><span className="mb-1 text-xs text-muted-foreground">para siempre</span></div>
               <p className="mt-5 max-w-sm text-sm text-muted-foreground">Para mantener tus descargas bajo control en un equipo.</p>
               <ul className="mt-8 space-y-3 text-sm">
-                {["1 navegador", "Análisis de nuevas descargas", "Sugerencias de limpieza", "Panel de impacto básico"].map((item) => (
+                {["1 navegador", "Análisis de nuevas descargas", "Sugerencias de limpieza", "Panel de impacto básico", "Límite de limpieza: 500 MB por mes"].map((item) => (
                   <li key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-moss" />{item}</li>
                 ))}
               </ul>
@@ -304,16 +304,18 @@ function Index() {
             <article className="relative border-b border-r border-border bg-surface/60 p-7 md:p-10">
               <span className="absolute right-7 top-7 text-[10px] uppercase tracking-widest text-moss">Recomendado</span>
               <p className="text-sm">Pro</p>
-              <div className="mt-8 flex items-end gap-2"><span className="display text-6xl">€4,99</span><span className="mb-1 text-xs text-muted-foreground">/ mes</span></div>
+              <div className="mt-8 flex items-end gap-2"><span className="display text-6xl">S/19.90</span><span className="mb-1 text-xs text-muted-foreground">/ mes</span></div>
+              <p className="mt-2 text-xs text-muted-foreground">o S/179/año — dos meses gratis</p>
               <p className="mt-5 max-w-sm text-sm text-muted-foreground">Para automatizar la limpieza en todos tus navegadores y servicios.</p>
               <ul className="mt-8 space-y-3 text-sm">
-                {["Navegadores ilimitados", "Limpieza automática configurable", "Google Drive, Gmail, OneDrive y Dropbox", "Historial, reversión y métricas completas"].map((item) => (
+                {["Limpieza ilimitada", "Navegadores ilimitados", "Limpieza automática configurable", "Google Drive, Gmail, OneDrive y Dropbox", "Historial, reversión y métricas completas"].map((item) => (
                   <li key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-moss" />{item}</li>
                 ))}
               </ul>
               <Link to="/auth" className="mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm text-background transition hover:opacity-90"><Download className="h-4 w-4" />Probar Pro</Link>
             </article>
           </div>
+
         </div>
       </section>
 

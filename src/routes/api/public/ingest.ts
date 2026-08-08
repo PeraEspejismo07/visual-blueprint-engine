@@ -50,12 +50,42 @@ export const Route = createFileRoute("/api/public/ingest")({
             return Response.json({ ok: true, inserted: 0 }, { headers: cors });
           }
 
+          // Free plan: 500 MB of cleanup per calendar month. Analysis and
+          // suggestions stay available; only "eliminado" actions are blocked.
+          const FREE_LIMIT = 500 * 1_000_000;
+          let plan = "free";
+          let usedBytes = 0;
+          let limitBytes = FREE_LIMIT;
+          const { data: usageData } = await supabaseAdmin.rpc("month_cleanup_usage" as never, {
+            p_user_id: userId,
+          } as never);
+          const usageRow = (Array.isArray(usageData) ? usageData[0] : usageData) as
+            | { plan?: string; used_bytes?: number; limit_bytes?: number }
+            | null;
+          if (usageRow) {
+            plan = usageRow.plan ?? "free";
+            usedBytes = Number(usageRow.used_bytes ?? 0);
+            limitBytes = Number(usageRow.limit_bytes ?? FREE_LIMIT);
+          }
+          const unlimited = plan === "pro" || limitBytes < 0;
+          let remaining = unlimited ? Number.POSITIVE_INFINITY : Math.max(0, limitBytes - usedBytes);
+          let blockedCount = 0;
+
           const rows = payload.events.slice(0, 200).map((e) => {
             const bytes = Math.max(0, Number(e.size_bytes ?? 0));
+            let action = e.action_type;
+            if (action === "eliminado") {
+              if (bytes > remaining) {
+                action = "sugerido";
+                blockedCount++;
+              } else {
+                remaining -= bytes;
+              }
+            }
             return {
               user_id: userId,
               source: String(e.source).slice(0, 64),
-              action_type: e.action_type,
+              action_type: action,
               file_name: e.file_name ? String(e.file_name).slice(0, 500) : null,
               size_bytes: bytes,
               co2_grams_saved: Math.round((bytes / 1_000_000_000) * 4400),
@@ -75,7 +105,18 @@ export const Route = createFileRoute("/api/public/ingest")({
 
           await supabaseAdmin.from("devices").update({ last_seen_at: new Date().toISOString() }).eq("id", device.id);
 
-          return Response.json({ ok: true, inserted: rows.length }, { headers: cors });
+          return Response.json(
+            {
+              ok: true,
+              inserted: rows.length,
+              plan,
+              quota: unlimited
+                ? { unlimited: true }
+                : { usedBytes: limitBytes - Math.max(0, remaining), limitBytes, blocked: remaining <= 0 },
+              blockedCount,
+            },
+            { headers: cors },
+          );
         } catch (e) {
           return Response.json({ error: (e as Error).message }, { status: 500, headers: cors });
         }
