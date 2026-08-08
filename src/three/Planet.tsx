@@ -113,7 +113,7 @@ export function Planet({
     }
     const mat = coreRef.current?.material as THREE.MeshBasicMaterial | undefined;
     if (mat) {
-      mat.opacity = Math.min(1, split.current * 1.6) * 0.2 + crackGlow.current * 0.1;
+      mat.opacity = Math.min(1, split.current * 1.6) * 0.1 + crackGlow.current * 0.05;
     }
   });
 
@@ -123,7 +123,7 @@ export function Planet({
       <PlanetHalf half={-1} split={split} crackGlow={crackGlow} vibration={vibration} detail={detail} />
       <PlanetHalf half={1} split={split} crackGlow={crackGlow} vibration={vibration} detail={detail} />
       <mesh ref={coreRef}>
-        <sphereGeometry args={[0.3, 24, 24]} />
+        <sphereGeometry args={[0.2, 24, 24]} />
         <meshBasicMaterial
           color={"#fff8e0"}
           transparent
