@@ -39,7 +39,7 @@ export function Scene({ quality = "high" }: { quality?: "high" | "low" }) {
     () =>
       quality === "high"
         ? { dpr: [1, 2] as [number, number], detail: 64, particles: 200, samples: 4 }
-        : { dpr: [1, 1.5] as [number, number], detail: 32, particles: 80, samples: 0 },
+        : { dpr: [1, 1.5] as [number, number], detail: 32, particles: 80, samples: 2 },
     [quality],
   );
 

@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_authenticated/dashboard/activity")({
 });
 
 function Activity() {
-  const { data } = useQuery({ queryKey: ["actions"], queryFn: () => listRecentActions(), refetchInterval: 15_000 });
+  const { data } = useQuery({ queryKey: ["actions"], queryFn: () => listRecentActions() });
   const list = data ?? [];
   return (
     <div className="mx-auto max-w-[1200px] px-6 md:px-10 py-8">

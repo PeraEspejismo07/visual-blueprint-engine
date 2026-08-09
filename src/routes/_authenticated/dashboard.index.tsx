@@ -5,7 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { getOverview, listRecentActions, getUsage } from "@/lib/dashboard.functions";
 import { UsageMeter, UpgradeModal } from "@/components/dashboard/UsageMeter";
 import { Onboarding } from "@/components/dashboard/Onboarding";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { lazy, Suspense } from "react";
+const ImpactChart = lazy(() => import("@/components/dashboard/ImpactChart"));
 import { ArrowUpRight, HardDrive, Leaf, Zap } from "lucide-react";
 
 
@@ -23,12 +24,12 @@ function Overview() {
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUserId(data.user?.id ?? null));
+    supabase.auth.getSession().then(({ data }) => setUserId(data.session?.user.id ?? null));
   }, []);
 
   const overview = useQuery({ queryKey: ["overview"], queryFn: () => getOverview() });
-  const actions = useQuery({ queryKey: ["actions"], queryFn: () => listRecentActions(), refetchInterval: 15_000 });
-  const usage = useQuery({ queryKey: ["usage"], queryFn: () => getUsage(), refetchInterval: 30_000 });
+  const actions = useQuery({ queryKey: ["actions"], queryFn: () => listRecentActions() });
+  const usage = useQuery({ queryKey: ["usage"], queryFn: () => getUsage() });
 
   const [upgradeDismissed, setUpgradeDismissed] = useState(false);
 
