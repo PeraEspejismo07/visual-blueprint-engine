@@ -3,6 +3,12 @@ import { Check, Download, Gauge, ShieldCheck, Sparkles } from "lucide-react";
 import { SceneMount } from "@/three/SceneMount";
 import { useScrollProgress } from "@/three/useScrollProgress";
 
+/** Isolated so scroll updates re-render 12 characters, not the whole landing. */
+function ScrollPercent() {
+  const p = useScrollProgress();
+  return <>{(p * 100).toFixed(0)}%</>;
+}
+
 const BROWSERS: { name: string; logo: string }[] = [
   { name: "Chrome", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/chrome@2.0.0/chrome_64x64.png" },
   { name: "Edge", logo: "https://cdn.jsdelivr.net/npm/@browser-logos/edge@2.0.5/edge_64x64.png" },
