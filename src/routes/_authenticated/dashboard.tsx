@@ -19,7 +19,7 @@ function DashboardLayout() {
   const [cmdOpen, setCmdOpen] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? null));
+    supabase.auth.getSession().then(({ data }) => setEmail(data.session?.user.email ?? null));
     const { data: sub } = supabase.auth.onAuthStateChange((e, s) => {
       if (e === "SIGNED_OUT" || !s) navigate({ to: "/auth", replace: true });
       else setEmail(s.user.email ?? null);
@@ -32,7 +32,6 @@ function DashboardLayout() {
   const { data } = useQuery({
     queryKey: ["overview"],
     queryFn: () => getOverview(),
-    refetchInterval: 30_000,
   });
 
   return (
