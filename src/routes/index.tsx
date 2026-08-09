@@ -49,15 +49,15 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [
+      { rel: "preconnect", href: "https://cdn.jsdelivr.net", crossOrigin: "anonymous" },
+    ],
   }),
   component: Index,
 });
 
 
 function Index() {
-  const p = useScrollProgress();
-
-
   return (
     <main className="relative min-h-[700vh] bg-background text-foreground">
       <SceneMount />
@@ -146,7 +146,7 @@ function Index() {
                 onClick={downloadExtension}
                 className="group flex flex-col items-center gap-5 rounded-2xl border border-border bg-surface/40 p-7 transition hover:border-foreground"
               >
-                <img src={b.logo} alt={`Logo de ${b.name}`} className="h-14 w-14" loading="lazy" />
+                <img src={b.logo} alt={`Logo de ${b.name}`} className="h-14 w-14" width={64} height={64} loading="lazy" decoding="async" />
                 <span className="rounded-full bg-foreground/10 px-3 py-1 text-xs">{b.name}</span>
                 <span className="flex items-center gap-2 text-[11px] text-muted-foreground group-hover:text-foreground">
                   <Download className="h-3.5 w-3.5" /> Descargar
@@ -337,7 +337,7 @@ function Index() {
             <Link to="/terms" className="hover:text-foreground transition">Términos</Link>
             <a href="mailto:hola@carbofile.com" className="hover:text-foreground transition">Contacto</a>
           </nav>
-          <p>© MMXXVI — Menos bytes, más planeta. {(p * 100).toFixed(0)}%</p>
+          <p>© MMXXVI — Menos bytes, más planeta. <ScrollPercent /></p>
         </div>
       </footer>
 
