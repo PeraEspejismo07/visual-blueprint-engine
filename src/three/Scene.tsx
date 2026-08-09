@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { EffectComposer, Bloom, Vignette, ToneMapping } from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { Planet } from "./Planet";
 import { Orbits } from "./Orbits";
@@ -26,11 +26,20 @@ export function Scene({ quality = "high" }: { quality?: "high" | "low" }) {
     });
   }, []);
 
+  // Stop the render loop entirely while the tab is hidden: no GPU/CPU burn in
+  // background tabs, which is the single biggest battery cost on mobile.
+  const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    const onVis = () => setVisible(document.visibilityState === "visible");
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
+
   const cfg = useMemo(
     () =>
       quality === "high"
-        ? { dpr: [1.5, 2.5] as [number, number], detail: 96, particles: 320, samples: 8 }
-        : { dpr: [1, 2] as [number, number], detail: 40, particles: 120, samples: 2 },
+        ? { dpr: [1, 2] as [number, number], detail: 64, particles: 200, samples: 4 }
+        : { dpr: [1, 1.5] as [number, number], detail: 32, particles: 80, samples: 0 },
     [quality],
   );
 
@@ -38,9 +47,10 @@ export function Scene({ quality = "high" }: { quality?: "high" | "low" }) {
     <Canvas
       className="!fixed inset-0 z-0"
       dpr={cfg.dpr}
+      frameloop={visible ? "always" : "never"}
       performance={{ min: 0.5 }}
       gl={{
-        antialias: true,
+        antialias: false,
         powerPreference: "high-performance",
         alpha: false,
         stencil: false,
