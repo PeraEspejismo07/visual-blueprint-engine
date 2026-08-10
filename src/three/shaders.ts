@@ -203,20 +203,20 @@ void main(){
 
   // Key light with a soft wrap term (rock scatters a little at the terminator).
   float wrap = clamp((dot(N, L) + 0.35) / 1.35, 0.0, 1.0);
-  vec3 key = surface * mix(ndl, wrap, 0.55) * vec3(1.05, 1.0, 0.92) * 1.35;
+  vec3 key = surface * mix(ndl, wrap, 0.55) * vec3(1.05, 1.0, 0.92) * 0.95;
 
   // Two-tone ambient: cool sky from above, warm bounce from below.
   vec3 skyCol = vec3(0.36, 0.45, 0.44);
   vec3 gndCol = vec3(0.16, 0.14, 0.10);
   float up = N.y * 0.5 + 0.5;
-  vec3 ambient = surface * mix(gndCol, skyCol, up) * 0.85;
+  vec3 ambient = surface * mix(gndCol, skyCol, up) * 0.5;
 
   // Specular: rough GGX-ish lobe, much tighter on wet stone than on moss.
   float rough = mix(0.42, 0.85, mossAmt);
   float a = rough * rough;
   float d = (ndh * ndh) * (a * a - 1.0) + 1.0;
   float spec = (a * a) / (3.14159 * d * d + 1e-4);
-  float specStrength = mix(0.5, 0.08, mossAmt);
+  float specStrength = mix(0.22, 0.05, mossAmt);
   vec3 specular = vec3(1.0, 0.97, 0.9) * spec * specStrength * ndl;
 
   // Subsurface glow through thin moss at grazing/backlit angles.
