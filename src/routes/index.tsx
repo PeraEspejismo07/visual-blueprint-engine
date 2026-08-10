@@ -107,7 +107,33 @@ function Index() {
               Agendar demo
             </a>
           </div>
+
+          <div
+            className="mt-12 md:absolute md:right-10 md:top-1/2 md:mt-0 md:w-[520px] md:-translate-y-1/2 animate-fade-up"
+            style={{ animationDelay: "600ms" }}
+          >
+            <div className="rounded-3xl border border-border bg-surface/70 p-6 backdrop-blur-md">
+              <div className="grid grid-cols-4 gap-4">
+                {BROWSERS.map((b) => (
+                  <button
+                    key={b.name}
+                    type="button"
+                    onClick={downloadExtension}
+                    className="group flex flex-col items-center gap-3"
+                  >
+                    <img src={b.logo} alt={`Logo de ${b.name}`} className="h-11 w-11" width={64} height={64} decoding="async" />
+                    <span className="rounded-full bg-foreground/10 px-3 py-1 text-[11px]">{b.name}</span>
+                    <Download className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
+                  </button>
+                ))}
+              </div>
+              <p className="mt-5 text-center text-[11px] text-muted-foreground">
+                Extensión para estos navegadores
+              </p>
+            </div>
+          </div>
         </div>
+
 
         <div
           className="mx-auto flex w-full max-w-[1400px] items-end justify-between text-[12px] text-muted-foreground animate-fade-up"
