@@ -162,9 +162,6 @@ const vec3 CRACK_GLOW = vec3(1.0, 0.98, 0.85);
 
 void main(){
   vec3 N = normalize(vNormalW);
-  vec3 L = normalize(uLightDir);
-  float ndl = clamp(dot(N, L), 0.0, 1.0);
-  float rim = pow(1.0 - clamp(dot(N, vec3(0.0,0.0,1.0)), 0.0, 1.0), 2.5);
 
   // Stone base with high-frequency detail.
   float stoneNoise = fbm3(vPosO * 8.0) + fbm3(vPosO * 24.0) * 0.22;
@@ -176,23 +173,68 @@ void main(){
   float flowerMask = smoothstep(0.92, 0.98, fbm3(vPosO * 22.0 + 3.1)) * vMoss;
   moss = mix(moss, FLOWER, flowerMask * 0.85);
 
-  vec3 surface = mix(stone, moss, smoothstep(0.15, 0.55, vMoss));
+  float mossAmt = smoothstep(0.15, 0.55, vMoss);
+  vec3 surface = mix(stone, moss, mossAmt);
 
-  // Ambient occlusion in crevices.
-  float ao = mix(0.55, 1.0, smoothstep(-0.3, 0.6, vHeight));
+  // --- Micro-relief normal mapping -------------------------------------
+  // Derive a bump from the same noise field used for albedo so the surface
+  // catches light like real rock/moss instead of a smooth painted ball.
+  float bumpH = stoneNoise * (1.0 - mossAmt) + mossN * mossAmt * 0.7;
+  vec3 dPdx = dFdx(vPosW);
+  vec3 dPdy = dFdy(vPosW);
+  float dHdx = dFdx(bumpH);
+  float dHdy = dFdy(bumpH);
+  vec3 bumpVec = (dHdx * cross(N, dPdy) - dHdy * cross(N, dPdx));
+  float bumpScale = mix(0.35, 0.18, mossAmt);
+  N = normalize(N - bumpScale * bumpVec / max(1e-5, length(cross(dPdx, dPdy))) * 0.002);
 
-  // Cracks emit faint white light, ramped by uCrackGlow.
+  vec3 V = normalize(cameraPosition - vPosW);
+  vec3 L = normalize(uLightDir);
+  vec3 H = normalize(L + V);
+
+  float ndl = clamp(dot(N, L), 0.0, 1.0);
+  float ndv = clamp(dot(N, V), 0.0, 1.0);
+  float ndh = clamp(dot(N, H), 0.0, 1.0);
+  float fres = pow(1.0 - ndv, 4.0);
+
+  // Ambient occlusion in crevices + cavity from micro detail.
+  float ao = mix(0.5, 1.0, smoothstep(-0.3, 0.6, vHeight));
+  ao *= mix(0.75, 1.0, smoothstep(-0.6, 0.8, stoneNoise));
+
+  // Key light with a soft wrap term (rock scatters a little at the terminator).
+  float wrap = clamp((dot(N, L) + 0.35) / 1.35, 0.0, 1.0);
+  vec3 key = surface * mix(ndl, wrap, 0.55) * vec3(1.05, 1.0, 0.92) * 1.35;
+
+  // Two-tone ambient: cool sky from above, warm bounce from below.
+  vec3 skyCol = vec3(0.36, 0.45, 0.44);
+  vec3 gndCol = vec3(0.16, 0.14, 0.10);
+  float up = N.y * 0.5 + 0.5;
+  vec3 ambient = surface * mix(gndCol, skyCol, up) * 0.85;
+
+  // Specular: rough GGX-ish lobe, much tighter on wet stone than on moss.
+  float rough = mix(0.42, 0.85, mossAmt);
+  float a = rough * rough;
+  float d = (ndh * ndh) * (a * a - 1.0) + 1.0;
+  float spec = (a * a) / (3.14159 * d * d + 1e-4);
+  float specStrength = mix(0.5, 0.08, mossAmt);
+  vec3 specular = vec3(1.0, 0.97, 0.9) * spec * specStrength * ndl;
+
+  // Subsurface glow through thin moss at grazing/backlit angles.
+  float sss = pow(clamp(dot(V, -L) * 0.5 + 0.5, 0.0, 1.0), 3.0) * mossAmt;
+  vec3 scatter = MOSS_LIGHT * sss * 0.35;
+
+  // Rim / atmosphere separation from the dark background.
+  vec3 rimCol = mix(vec3(0.55, 0.62, 0.52), MOSS_LIGHT, mossAmt) * fres * 0.5;
+
+  // Cracks emit faint light, ramped by uCrackGlow.
   float crackEdge = smoothstep(0.35, 0.9, vCrack);
   vec3 emissive = CRACK_GLOW * crackEdge * uCrackGlow * 1.6;
 
-  // Lighting composition — soft key + ambient wrap.
-  vec3 lit = surface * (ndl * 0.75 + 0.35) * ao;
-  lit += surface * rim * 0.12;
-  lit += emissive;
+  vec3 lit = (key + ambient) * ao + specular + scatter + rimCol + emissive;
 
-  // Deepen darks + micro contrast for a crisper, more defined surface.
-  lit = pow(lit, vec3(1.05));
-  lit = mix(lit, clamp((lit - 0.5) * 1.14 + 0.5, 0.0, 4.0), 0.55);
+  // Filmic-ish contrast for a crisper, more defined surface.
+  lit = pow(lit, vec3(1.04));
+  lit = mix(lit, clamp((lit - 0.5) * 1.12 + 0.5, 0.0, 4.0), 0.5);
 
   gl_FragColor = vec4(lit, 1.0);
 }
