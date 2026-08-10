@@ -181,6 +181,12 @@ function Index() {
             ))}
           </div>
 
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            Extensión para estos navegadores
+          </p>
+
+
+
           <div className="mt-12 flex flex-wrap gap-x-8 gap-y-4 text-xs text-muted-foreground">
             <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-moss" /> Análisis local</span>
             <span className="flex items-center gap-2"><Gauge className="h-4 w-4 text-moss" /> Bajo consumo</span>
